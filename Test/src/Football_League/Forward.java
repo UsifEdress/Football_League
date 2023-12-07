@@ -2,6 +2,8 @@ package Football_League;
 
 public class Forward extends Player{
     public Forward() {
+//        this.Successful_passes=successful_passes(30 ,0);
+//                this.miss_passes=unsuccessful_passes(this.Successful_passes , 0);
     }
 
     public Forward(String name, int player_ID, int player_Number, int player_Age, int player_Score, int player_Rank, String team) {
