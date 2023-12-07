@@ -33,6 +33,7 @@ public  class Player implements Player_Interface{
         Player_Rank = player_Rank;
         this.team = team;
     }
+
     //////////////////////////////////////////////////////////////////////////
     public void enterPlayerInformation()
     {
@@ -55,7 +56,9 @@ public  class Player implements Player_Interface{
             try {
                 System.out.print("Enter player ID: ");
                 int enteredID = scanner.nextInt();
+
                 validatePositiveNumber(enteredID);
+
                 this.Player_ID = enteredID;
                 break;
             } catch (InputMismatchException | IllegalArgumentException ex) {
@@ -153,48 +156,54 @@ public  class Player implements Player_Interface{
                 } catch (InputMismatchException | IllegalArgumentException ex) {
                     System.out.println("Invalid input for player Name. " + ex.getMessage());
                 } finally {
-                    scanner.nextLine();
+//                    scanner.nextLine();
                 }
             }
         }
         ///////////////////////////////
         System.out.print("Enter new player ID (press 0 to keep the current ID): ");
-        int newPlayerID = scanner.nextInt();
-        if (newPlayerID != 0) {
+
             while(true) {
                 try {
-                    System.out.print("Enter player ID: ");
+
                     int enteredID = scanner.nextInt();
+                    if (enteredID == 0){
+                        break;
+                    }
                     validatePositiveNumber(enteredID);
+
                     this.Player_ID = enteredID;
                     break;
                 } catch (InputMismatchException | IllegalArgumentException ex) {
                     System.out.println("Invalid input for player ID. " + ex.getMessage());
                 } finally {
-                    scanner.nextLine();
+//                    scanner.nextLine();
                 }
             }
-        }
+
         /////////////////////////////
         System.out.print("Enter new player number (press 0 to keep the current number): ");
-        int newNumber = scanner.nextInt();
-        if (newNumber != 0) {
+
+
             while(true)
             {
                 try
                 {
-                    System.out.print("Enter player Number: ");
+
                     int enteredAge = scanner.nextInt();
+                    if (enteredAge == 0){
+                        break;
+                    }
                     validateTwoDigits(enteredAge);
                     this.Player_Number =enteredAge;
                     break;
                 } catch (InputMismatchException | IllegalArgumentException ex) {
                     System.out.println("Invalid input for player Number. " + ex.getMessage());
                 } finally {
-                    scanner.nextLine();
+//                    scanner.nextLine();
                 }
             }
-        }
+
         ////////////////////////////////////
         scanner.nextLine();
         System.out.print("Enter new player team (press Enter to keep the current team): ");
@@ -204,12 +213,15 @@ public  class Player implements Player_Interface{
         }
         //////////////////////////////////////
         System.out.print("Enter new player age (press 0 to keep the current age): ");
-        int newAge = scanner.nextInt();
-        if (newAge != 0) {
+
+
             while(true) {
                 try {
-                    System.out.print("Enter player Age: ");
+
                     int enteredAge = scanner.nextInt();
+                    if (enteredAge == 0){
+                        break;
+                    }
                     validateAge(enteredAge);
                     this.Player_Age = enteredAge;
                     break;
@@ -219,7 +231,7 @@ public  class Player implements Player_Interface{
                     scanner.nextLine();
                 }
             }
-        }
+
         //////////////////////////////////////////////
         System.out.print("Enter new player score (press 0.0 to keep the current score): ");
         double newScore = scanner.nextDouble();
@@ -235,19 +247,42 @@ public  class Player implements Player_Interface{
         //////////////////////////////////
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public  boolean searchPlayer(String playerName, String teamName) {
-        boolean nameMatch = this.Player_Name.equalsIgnoreCase(playerName);
-        boolean teamMatch = this.team.equalsIgnoreCase(teamName);
-        if (nameMatch && teamName.isEmpty())
-        {
-            return true;
+
+
+    // PLEASE NOTE THAT THIS METHOD IS NOT WORKING
+    public static void searchPlayer() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter team name to search in: ");
+        String teamName = scanner.nextLine().trim();
+
+        System.out.print("Enter player name to search: ");
+        String playerName = scanner.nextLine().trim();
+
+        // In a real application, you would likely pass a list of teams to the method
+        // For simplicity, let's assume you have a list called "teams"
+        List<Team> teams = new ArrayList<>();
+
+        for (Team team : teams) {
+            if (team.getName().equals(teamName) && team.getPlayers() != null) {
+                for (Player player : team.getPlayers()) {
+                    if (player.getPlayerName().equals(playerName)) {
+                        System.out.println("Player " + playerName + " found in team " + teamName + ".");
+                        return;
+                    }
+                }
+            }
         }
-        else if (nameMatch && teamMatch)
-        {
-            return true;
-        }
-            return false;
+
+        System.out.println("Player " + playerName + " not found in team " + teamName + ".");
     }
+
+
+
+
+
+
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validateTwoDigits(int number) {
         if (number <= 0 || number > 99) {
@@ -262,7 +297,7 @@ public  class Player implements Player_Interface{
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validatePositiveNumber(int value) {
-        if (value <= 0) {
+        if (value < 0) {
             throw new IllegalArgumentException("Input must be a positive value.");
         }
     }
@@ -286,4 +321,50 @@ public  class Player implements Player_Interface{
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Getters
+    public String getPlayerName(){
+        return this.Player_Name;
+    }
+    public int getID(){
+        return this.Player_ID;
+    }
+    public String getTeamName(){
+        return this.team;
+    }
+    public int getNumber(){
+        return Player_Number;
+    }
+   public int getAge(){
+        return this.Player_Age;
+    }
+
+   public int getGoalsScored(){
+        return this.Player_Score;
+   }
+    public float getRank(){
+        return this.Player_Rank;
+    }
+
+    //setters
+    @Override
+    public void setName(String name) {
+        this.Player_Name = name;
+    }
+
+    @Override
+    public void setNumber(int number) {
+        this.Player_Number = number;
+    }
+
+    @Override
+    public void setPlayerID(int playerID) {
+        this.Player_ID = playerID;
+    }
+
+
+
+    @Override
+    public void setRank(int rank) {
+        this.Player_Rank = rank;
+    }
 }

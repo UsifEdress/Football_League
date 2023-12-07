@@ -4,5 +4,23 @@ interface Player_Interface {
      void enterPlayerInformation();
      void displayPlayerInformation();
      void updatePlayerInformation();
-     boolean searchPlayer(String playerName, String teamName);
+
+
+     //setters
+     void setName(String name);
+     void setNumber(int number);
+     void setPlayerID(int playerID);
+
+     void setRank(int rank);
+
+
+     // Getters
+     String getPlayerName();
+     int getID();
+     String getTeamName();
+     int getNumber();
+     int getAge();
+
+     int getGoalsScored();
+     float getRank();
 }
