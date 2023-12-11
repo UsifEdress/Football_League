@@ -7,25 +7,25 @@ public class Team implements Team_Interface {
     private List<Player> players;
     private Player captain;
     private List<Match> matches;
-    private int totalScore;
-    int Goals_Recieved;
-    int Goals_Scored;
-    int Total_Goals_Recieved;
-    int Total_Goals_Scored;
-    int Number_of_wins;
-    int Number_of_draws;
-    int Number_of_loses;
-    int Number_of_Points;
+    private int goalsScored;
+    private int totalGoalsScored;
+    private int totalGoalsReceived;
+    private int numberOfWins;
+    private int numberOfPoints;
+    private int numberOfLoses;
+    private int numberOfDraws;
+    private int goalsReceived;
     int Number_of_successful_passes;
     int Number_of_unsuccessful_passes;
     private static int totalTeams = 0;
     private Scanner scanner = new Scanner(System.in);
 
+    public List<Team> myleagueTeams = new ArrayList<>();
     // getters
+
     public String getName() {
         return teamName;
     }
-
     public int getTeamId() {
         return teamId;
     }
@@ -38,20 +38,78 @@ public class Team implements Team_Interface {
         return captain;
     }
 
-    public List<Match> getMatches() {
-        return matches;
+    public int getGoalsScored() {
+        return goalsScored;
     }
 
-    public int getTotalScore() {
-        return totalScore;
+    public int getTotalGoalsScored() {
+        return totalGoalsScored;
+    }
+
+    public int getTotalGoalsReceived() {
+        return totalGoalsReceived;
+    }
+
+    public int getNumberOfWins() {
+        return numberOfWins;
+    }
+
+    public int getNumberOfPoints() {
+        return numberOfPoints;
+    }
+
+    public int getNumberOfLoses() {
+        return numberOfLoses;
+    }
+
+    public int getNumberOfDraws() {
+        return numberOfDraws;
+    }
+
+    public int getGoalsReceived() {
+        return goalsReceived;
+    }
+    // Setters
+
+    public void setGoalsScored(int goalsScored) {
+        this.goalsScored = goalsScored;
+    }
+
+    public void setTotalGoalsScored(int totalGoalsScored) {
+        this.totalGoalsScored += totalGoalsScored;
+    }
+
+    public void setTotalGoalsReceived(int totalGoalsReceived) {
+        this.totalGoalsReceived += totalGoalsReceived;
+    }
+
+    public void setNumberOfWins() {
+        this.numberOfWins ++;
+    }
+
+    public void setNumberOfPoints(int numberOfPoints) {
+        this.numberOfPoints += numberOfPoints;
+    }
+
+    public void setNumberOfLoses() {
+        this.numberOfLoses ++;
+    }
+
+    public void setNumberOfDraws() {
+        this.numberOfDraws ++;
+    }
+
+    public void setGoalsReceived(int goalsReceived) {
+        this.goalsReceived = goalsReceived;
     }
 
     // Constructor
-    public Team(){}
+    //public Team(){}
     public Team(String name, int teamId) {
         this.teamName = name;
         this.teamId = teamId;
         this.players = new ArrayList<>();
+        myleagueTeams.add(this);
     }
 
 
@@ -170,25 +228,30 @@ public class Team implements Team_Interface {
         System.out.println("Team ID: " + teamId);
 
         // Display players
-        System.out.println("Players:");
-        for (Player player : players) {
-            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
-        }
-
-        // Display captain
-        if (captain != null) {
-            System.out.println("Captain: " + captain.getPlayerName() + " (ID: " + captain.getID() + ")");
-        } else {
-            System.out.println("Captain: Not set");
-        }
-
-        // Display matches
-//            System.out.println("Matches:");  // Assuming you have a Match class
-//            for (Match match : matches) {
-//                System.out.println("  - " + match.getMatchInfo());
-//            }
-
-        System.out.println("Total Score: " + totalScore);
+//        System.out.println("Players:");
+//        for (Player player : players) {
+//            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
+//        }
+//
+//        // Display captain
+//        if (captain != null) {
+//            System.out.println("Captain: " + captain.getPlayerName() + " (ID: " + captain.getID() + ")");
+//        } else {
+//            System.out.println("Captain: Not set");
+//        }
+//
+//        // Display matches
+////            System.out.println("Matches:");  // Assuming you have a Match class
+////            for (Match match : matches) {
+////                System.out.println("  - " + match.getMatchInfo());
+////            }
+        //
+        System.out.println("Goals Scored in match: " +goalsScored);
+        System.out.println("Goals recieved in match: " +goalsReceived);
+        // for testing
+        System.out.println("Total Goals: " +totalGoalsScored);
+        System.out.println("Total Points: " +numberOfPoints);
+        System.out.println();
     }
 
 
@@ -303,7 +366,7 @@ public class Team implements Team_Interface {
     }
 
     public int Goals_assumption() {
-        return ((int)(Math.random() * 10 + 0));
+        return ((int)(Math.random() * 6 + 0));
     }
 
     public void passes_calculation(Player p1){
