@@ -3,16 +3,14 @@ package Football_League;
 import java.util.* ;
 public class Player implements Player_Interface {
 
-    public String Player_Name;
-    public int Player_ID;
-    public int Player_Number;
-    public int Player_Age;
-    public int Player_Score;
-    public float Player_Rank;
+    private String Player_Name;
+    private int Player_ID;
+    private int Player_Number;
+    private int Player_Age;
+    private int Player_Score;
+    private float Player_Rank;
 
-    public enum position {Goalkeeper, defender, midfielder, forward}
-
-    ;
+    public enum position {Goalkeeper, defender, midfielder, forward};
     public position player_position;
     public String team;
 
