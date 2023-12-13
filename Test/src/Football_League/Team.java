@@ -4,7 +4,7 @@ public class Team implements Team_Interface {
     // Attributes
     private String teamName;
     private int teamId;
-    private List<Player> players;
+    public List<Player> players;
     private Player captain;
     private List<Match> matches;
     private int goalsScored;
@@ -20,7 +20,7 @@ public class Team implements Team_Interface {
     private static int totalTeams = 0;
     private Scanner scanner = new Scanner(System.in);
 
-    public List<Team> myleagueTeams = new ArrayList<>();
+
     // getters
 
     public String getName() {
@@ -109,7 +109,7 @@ public class Team implements Team_Interface {
         this.teamName = name;
         this.teamId = teamId;
         this.players = new ArrayList<>();
-        myleagueTeams.add(this);
+
     }
 
 
@@ -266,6 +266,13 @@ public class Team implements Team_Interface {
             System.out.println("Player Number: " + player.getNumber());
             System.out.println("Player Rank: " + player.getRank());
             System.out.println();
+        }
+    }
+    public void displayTeamPlayersWithID() {
+        System.out.println("Players:");
+
+        for (Player player : players) {
+            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
         }
     }
 

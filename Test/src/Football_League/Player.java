@@ -55,7 +55,7 @@ public class Player implements Player_Interface {
             } catch (IllegalArgumentException ex) {
                 System.out.println("Invalid input for player name. " + ex.getMessage());
             } finally {
-                scanner.nextLine();
+
             }
         }
         while (true) {
@@ -125,8 +125,8 @@ public class Player implements Player_Interface {
                 scanner.nextLine();
             }
         }
-        System.out.print("Enter player team: ");
-        this.team = scanner.nextLine();
+//        System.out.print("Enter player team: ");
+//        this.team = scanner.nextLine();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
