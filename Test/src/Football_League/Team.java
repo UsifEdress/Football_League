@@ -170,28 +170,107 @@ public class Team implements Team_Interface {
         int numberOfPlayers = scanner.nextInt();
 
         for (int i = 0; i < numberOfPlayers; i++) {
-            Player player = new Player();
+            int positionNumber;
+            do {
 
-            System.out.println("Enter information for Player " + (i + 1) + ":");
-
-            System.out.print("Name: ");
-            player.setName(scanner.next());
-
-            System.out.print("Number: ");
-            player.setNumber(scanner.nextInt());
-
-            System.out.print("ID: ");
-            player.setPlayerID(scanner.nextInt());
-
-            System.out.print("Rank: ");
-            player.setRank(scanner.nextInt());
-
-            // Add the player to the team
-            addPlayerToTeam(player);
+                System.out.println("Choose a position:");
+                System.out.println("1. Forward");
+                System.out.println("2. Midfielder");
+                System.out.println("3. Defender");
+                System.out.println("4. Goalkeeper");
 
 
-            System.out.println("Team information entered successfully!");
+                System.out.println("Enter position for Player " + (i + 1) + ":");
+                positionNumber = scanner.nextInt();
+                scanner.nextLine();
+
+
+            } while (positionNumber < 1 || positionNumber > 4);
+            switch (positionNumber) {
+                case 1:
+                    Player player = new Forward();
+                    System.out.println("Enter information for Player " + (i + 1) + ":");
+
+                    System.out.print("Name: ");
+                    player.setName(scanner.next());
+
+                    System.out.print("Number: ");
+                    player.setNumber(scanner.nextInt());
+
+                    System.out.print("ID: ");
+                    player.setPlayerID(scanner.nextInt());
+
+                    System.out.print("Rank: ");
+                    player.setRank(scanner.nextInt());
+
+                    // Add the player to the team
+                    addPlayerToTeam(player);
+                    break;
+                case 2:
+                    Player Mid = new Midfielder();
+                    System.out.println("Enter information for Player " + (i + 1) + ":");
+
+                    System.out.print("Name: ");
+                    Mid.setName(scanner.next());
+
+                    System.out.print("Number: ");
+                    Mid.setNumber(scanner.nextInt());
+
+                    System.out.print("ID: ");
+                    Mid.setPlayerID(scanner.nextInt());
+
+                    System.out.print("Rank: ");
+                    Mid.setRank(scanner.nextInt());
+
+                    // Add the player to the team
+                    addPlayerToTeam(Mid);
+                    break;
+                case 3:
+                    Player def = new Defender();
+                    System.out.println("Enter information for Player " + (i + 1) + ":");
+
+                    System.out.print("Name: ");
+                    def.setName(scanner.next());
+
+                    System.out.print("Number: ");
+                    def.setNumber(scanner.nextInt());
+
+                    System.out.print("ID: ");
+                    def.setPlayerID(scanner.nextInt());
+
+                    System.out.print("Rank: ");
+                    def.setRank(scanner.nextInt());
+
+                    // Add the player to the team
+                    addPlayerToTeam(def);
+                    break;
+                case 4:
+                    Player goalie = new GoalKeeper();
+                    System.out.println("Enter information for Player " + (i + 1) + ":");
+
+                    System.out.print("Name: ");
+                    goalie.setName(scanner.next());
+
+                    System.out.print("Number: ");
+                    goalie.setNumber(scanner.nextInt());
+
+                    System.out.print("ID: ");
+                    goalie.setPlayerID(scanner.nextInt());
+
+                    System.out.print("Rank: ");
+                    goalie.setRank(scanner.nextInt());
+
+                    // Add the player to the team
+                    addPlayerToTeam(goalie);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid position number.");
+
+
+
+            }
         }
+        System.out.println("Team information entered successfully!");
     }
 
 
@@ -271,10 +350,13 @@ public class Team implements Team_Interface {
     public void displayTeamPlayersWithID() {
         System.out.println("Players:");
 
+        int playerCounter = 1;
         for (Player player : players) {
-            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
+            System.out.println("    " + playerCounter + ". " + player.getPlayerName() + " (ID: " + player.getID() + ")");
+            playerCounter++;
         }
     }
+
 
 
 
@@ -291,7 +373,7 @@ public class Team implements Team_Interface {
 
         players.add(player);
 
-        System.out.println("Player " + player.getPlayerName() + " added to the team!");
+        System.out.println("Player " + player.getPlayerName() + " added to team " + teamName + " !");
 
         // Prompt to make the player the captain
         System.out.print("Do you want to make this player the captain? (y/n): ");
@@ -302,7 +384,16 @@ public class Team implements Team_Interface {
         }
     }
 
-
+    public void deletePlayer(int playerID) {
+        Iterator<Player> iterator = players.iterator();
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+            if (player.getID() == playerID) {
+                iterator.remove(); // Remove the player from the team's player list
+                break;
+            }
+        }
+    }
 
     @Override
     public void deletePlayerFromTeam() {
@@ -365,8 +456,8 @@ public class Team implements Team_Interface {
 
 
 
-    @Override
-    public int calculateTotalTeams () {
+
+    public static int calculateTotalTeams () {
         return totalTeams;
 
 

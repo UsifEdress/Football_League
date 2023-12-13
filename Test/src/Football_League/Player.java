@@ -1,7 +1,8 @@
 package Football_League;
 
-import java.util.* ;
-public class Player implements Player_Interface {
+import java.util.*;
+
+public abstract class Player implements Player_Interface {
 
     private String Player_Name;
     private int Player_ID;
@@ -10,7 +11,9 @@ public class Player implements Player_Interface {
     private int Player_Score;
     private float Player_Rank;
 
-    public enum position {Goalkeeper, defender, midfielder, forward};
+    public enum position {Goalkeeper, defender, midfielder, forward}
+
+    ;
     public position player_position;
     public String team;
 
@@ -42,6 +45,7 @@ public class Player implements Player_Interface {
         this.team = team;
     }
 
+
     //////////////////////////////////////////////////////////////////////////
     public void enterPlayerInformation() {
         Scanner scanner = new Scanner(System.in);
@@ -54,8 +58,6 @@ public class Player implements Player_Interface {
                 break;
             } catch (IllegalArgumentException ex) {
                 System.out.println("Invalid input for player name. " + ex.getMessage());
-            } finally {
-
             }
         }
         while (true) {
@@ -63,7 +65,10 @@ public class Player implements Player_Interface {
                 System.out.print("Enter player ID: ");
                 int enteredID = scanner.nextInt();
 
+
+
                 validatePositiveNumber(enteredID);
+
 
                 this.Player_ID = enteredID;
                 break;
@@ -130,15 +135,8 @@ public class Player implements Player_Interface {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void displayPlayerInformation() {
-        System.out.println("Player Information:");
-        System.out.println("Name: " + this.Player_Name);
-        System.out.println("ID: " + this.Player_ID);
-        System.out.println("Number: " + this.Player_Number);
-        System.out.println("Age: " + this.Player_Age);
-        System.out.println("Score: " + this.Player_Score);
-        System.out.println("Team: " + this.team);
-    }
+    public abstract void displayPlayerInformation();
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void updatePlayerInformation() {
@@ -154,8 +152,6 @@ public class Player implements Player_Interface {
                     break;
                 } catch (InputMismatchException | IllegalArgumentException ex) {
                     System.out.println("Invalid input for player Name. " + ex.getMessage());
-                } finally {
-//                    scanner.nextLine();
                 }
             }
         }
@@ -179,27 +175,43 @@ public class Player implements Player_Interface {
 //                    scanner.nextLine();
             }
         }
-
         /////////////////////////////
         System.out.print("Enter new player number (press 0 to keep the current number): ");
+        System.out.println();
+        displayPossiblePositions();
 
-
-        while (true) {
+        int enteredNumber;
+        do {
             try {
+                enteredNumber = scanner.nextInt();
 
-                int enteredAge = scanner.nextInt();
-                if (enteredAge == 0) {
-                    break;
+
+                switch (enteredNumber) {
+                    case 0:
+
+                        break;
+                    case 1:
+                        this.player_position = position.forward;
+                        break;
+                    case 2:
+                        this.player_position = position.midfielder;
+                        break;
+                    case 3:
+                        this.player_position = position.defender;
+                        break;
+                    case 4:
+                        this.player_position = position.Goalkeeper;
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Invalid input for player position. It must be between 0 and 4.");
                 }
-                validateTwoDigits(enteredAge);
-                this.Player_Number = enteredAge;
+
                 break;
             } catch (InputMismatchException | IllegalArgumentException ex) {
                 System.out.println("Invalid input for player Number. " + ex.getMessage());
-            } finally {
-//                    scanner.nextLine();
             }
-        }
+        } while (true);
+
 
         ////////////////////////////////////
         scanner.nextLine();
@@ -246,35 +258,6 @@ public class Player implements Player_Interface {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    // PLEASE NOTE THAT THIS METHOD IS NOT WORKING
-    public static void searchPlayer() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter team name to search in: ");
-        String teamName = scanner.nextLine().trim();
-
-        System.out.print("Enter player name to search: ");
-        String playerName = scanner.nextLine().trim();
-
-        // In a real application, you would likely pass a list of teams to the method
-        // For simplicity, let's assume you have a list called "teams"
-        List<Team> teams = new ArrayList<>();
-
-        for (Team team : teams) {
-            if (team.getName().equals(teamName) && team.getPlayers() != null) {
-                for (Player player : team.getPlayers()) {
-                    if (player.getPlayerName().equals(playerName)) {
-                        System.out.println("Player " + playerName + " found in team " + teamName + ".");
-                        return;
-                    }
-                }
-            }
-        }
-
-        System.out.println("Player " + playerName + " not found in team " + teamName + ".");
-    }
-
-
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validateTwoDigits(int number) {
         if (number <= 0 || number > 99) {
@@ -316,6 +299,16 @@ public class Player implements Player_Interface {
             throw new IllegalArgumentException("Player rank must be between 1 and 10.");
         }
     }
+
+
+    private void displayPossiblePositions() {
+        System.out.println("Choose a position:");
+        System.out.println("1. Forward");
+        System.out.println("2. Midfielder");
+        System.out.println("3. Defender");
+        System.out.println("4. Goalkeeper");
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Getters
@@ -369,6 +362,10 @@ public class Player implements Player_Interface {
         this.Player_Rank = rank;
     }
 
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
     // (int) (Math.random() * (Max-Min) + Min)
     /*
     this function returns double value
@@ -377,41 +374,36 @@ public class Player implements Player_Interface {
      */
     @Override
     public int successful_passes(int lower_limit, int upper_limit) {
-        return (int)((Math.random() * (upper_limit-lower_limit)) + lower_limit);
+        return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
     }
+
     @Override
     public int unsuccessful_passes(int lower_limit, int successful_passes) {
-        return (int)((Math.random() * (successful_passes-lower_limit)) + lower_limit);
+        return (int) ((Math.random() * (successful_passes - lower_limit)) + lower_limit);
     }
+
     int Number_of_shots(int lower_limit, int upper_limit) {
-        return (int)((Math.random() * (upper_limit-lower_limit)) + lower_limit);
-    }
-    void passes_simulation(Player p1){
-        p1.Successful_passes=successful_passes(30,100);
-        p1.miss_passes=unsuccessful_passes(0,p1.Successful_passes);
+        return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
     }
 
-    public void player_simulation(Team t1){
+    void passes_simulation(Player p1) {
+        p1.Successful_passes = successful_passes(30, 100);
+        p1.miss_passes = unsuccessful_passes(0, p1.Successful_passes);
+    }
 
-        for (int i =0 ; i<11 ;i++)
-        {
-            if(t1.players1[i].player_position==position.forward)
-            {
+    public void player_simulation(Team t1) {
+
+        for (int i = 0; i < 11; i++) {
+            if (t1.players1[i].player_position == position.forward) {
                 passes_simulation(t1.players1[i]);
                 t1.passes_calculation(t1.players1[i]);
-            }
-            else if (t1.players1[i].player_position==position.midfielder)
-            {
+            } else if (t1.players1[i].player_position == position.midfielder) {
                 passes_simulation(t1.players1[i]);
                 t1.passes_calculation(t1.players1[i]);
-            }
-            else if(t1.players1[i].player_position==position.defender)
-            {
+            } else if (t1.players1[i].player_position == position.defender) {
                 passes_simulation(t1.players1[i]);
                 t1.passes_calculation(t1.players1[i]);
-            }
-            else
-            {
+            } else {
                 passes_simulation(t1.players1[i]);
                 // unknown error t1.players1[i].GoalKeeper_saves=GoalKeeper_assumption_saves(20,0);
                 t1.passes_calculation(t1.players1[i]);

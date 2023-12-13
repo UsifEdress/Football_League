@@ -58,6 +58,7 @@ public class League {
             position++;
         }
     }
+
     public void viewTeams() {
         System.out.println("Teams in the League:");
         int counter = 1;
@@ -65,21 +66,36 @@ public class League {
             System.out.println(counter + ". " + team.getName());
             counter++;
         }
+        System.out.println();
     }
-
 
 
     public void viewPlayers() {
         System.out.println("Players in the League:");
 
-        int teamCounter = 1;
+        char teamCounter = 'A';
+        int playerCounter = 1; // Cumulative player counter for all teams
+
         for (Team team : teams) {
             System.out.println(teamCounter + ". " + team.getName());
-            team.displayTeamPlayersWithID();
+
+            for (Player player : team.getPlayers()) {
+
+                System.out.println("  " + playerCounter + ". " + player.getPlayerName());
+                playerCounter++;
+            }
+
+
             System.out.println();
+
+
             teamCounter++;
         }
+
     }
+
+
+
     public void displayAllPlayers() {
         System.out.println("All Players in the League:");
 
@@ -92,6 +108,7 @@ public class League {
                 playerCounter++;
             }
         }
+        System.out.println();
     }
 
 
@@ -103,4 +120,36 @@ public class League {
             team.displayTeamMatches();
         }
     }
+
+    public void searchPlayerByName(String playerName) {
+        for (Team team : teams) {
+            for (Player player : team.players) {
+                if (player.getPlayerName().equalsIgnoreCase(playerName)) {
+                    System.out.println("Player found:");
+                    player.displayPlayerInformation();
+                    return;
+                }
+            }
+        }
+        System.out.println("Player not found.");
+    }
+
+    public void searchPlayerByNameAndTeam(String playerName, String teamName) {
+        for (Team team : teams) {
+            if (team.getName().equalsIgnoreCase(teamName)) {
+                for (Player player : team.players) {
+                    if (player.getPlayerName().equalsIgnoreCase(playerName)) {
+                        System.out.println("Player found:");
+                        player.displayPlayerInformation();
+                        return;
+                    }
+                }
+                System.out.println("Player not found in the specified team.");
+                return;
+            }
+        }
+        System.out.println("Team not found.");
+    }
+
+
 }

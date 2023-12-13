@@ -9,5 +9,5 @@ public interface Team_Interface {
     void displayTeamMatches();
     void addPlayerToTeam(Player player);
     void deletePlayerFromTeam();
-    int calculateTotalTeams();
+
 }
