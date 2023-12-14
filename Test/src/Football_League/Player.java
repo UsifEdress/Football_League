@@ -1,8 +1,9 @@
 package Football_League;
 
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class Player implements Player_Interface {
+public abstract class Player implements Player_Interface , Serializable {
 
     private String Player_Name;
     private int Player_ID;
@@ -12,8 +13,6 @@ public abstract class Player implements Player_Interface {
     private float Player_Rank;
 
     public enum position {Goalkeeper, defender, midfielder, forward}
-
-    ;
     public position player_position;
     public String team;
 
@@ -109,7 +108,7 @@ public abstract class Player implements Player_Interface {
                 System.out.print("Enter player Score: ");
                 int enteredScore = scanner.nextInt();
                 validatescore(enteredScore);
-                this.Player_Number = enteredScore;
+                this.Player_Score = enteredScore;
                 break;
             } catch (InputMismatchException | IllegalArgumentException ex) {
                 System.out.println("Invalid input for player score. " + ex.getMessage());
@@ -176,7 +175,7 @@ public abstract class Player implements Player_Interface {
             }
         }
         /////////////////////////////
-        System.out.print("Enter new player number (press 0 to keep the current number): ");
+        System.out.print("Enter new player Position (press 0 to keep the current Position): ");
         System.out.println();
         displayPossiblePositions();
 

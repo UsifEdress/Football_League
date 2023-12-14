@@ -1,11 +1,13 @@
 package Football_League;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class League {
     public List<Team> teams;
+    public ArrayList<String> Teams_list = new ArrayList<>();
 
     public League() {
         this.teams = new ArrayList<>();
@@ -152,4 +154,30 @@ public class League {
     }
 
 
+    public void saveTeams() throws IOException {
+        for (Team team : teams) {
+            Files file = new Files(team.getName());
+            file.WriteFiles((ArrayList<Player>) team.players);
+        }
+    }
+    public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException {
+        for (String team : team_list) {
+            Files file = new Files(team+".txt");
+            ArrayList<Player> players = file.ReadFiles();
+        }
+    }
+    public void saveTeamNames() throws IOException {
+        Files file = new Files();
+
+        for (Team team : teams) {
+            Teams_list.add(team.getName());
+        }
+        file.WriteList(Teams_list);
+    }
+
+    public ArrayList<String> readTeamsNames() throws IOException, ClassNotFoundException {
+        Files file = new Files();
+         Teams_list =file.ReadList();
+        return Teams_list;
+    }
 }

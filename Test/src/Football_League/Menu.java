@@ -1,5 +1,6 @@
 package Football_League;
 
+import java.io.IOException;
 import java.util.*;
 
 public class Menu {
@@ -21,7 +22,7 @@ public class Menu {
         System.out.print("Enter your choice: ");
     }
 
-    public void start() {
+    public void start() throws IOException, ClassNotFoundException {
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
@@ -91,7 +92,7 @@ public class Menu {
                         System.out.println("Please enter the team of the player you want to display (type 0 to back)");
                         league.viewTeams();
                         int x = scanner.nextInt();
-                        if (x == 0){
+                        if (x == 0) {
                             return;
                         }
                         Team t = league.teams.get(x - 1);
@@ -121,7 +122,7 @@ public class Menu {
                     System.out.println("2. Player's name and team's name");
 
                     int searchOption = scanner.nextInt();
-                    if (searchOption == 0){
+                    if (searchOption == 0) {
                         return;
                     }
 
@@ -148,7 +149,7 @@ public class Menu {
                     System.out.println("Please enter the team of the player you want to delete (type 0 to back)");
                     league.viewTeams();
                     int x = scanner.nextInt();
-                    if (x== 0 ){
+                    if (x == 0) {
                         return;
                     }
                     Team team = league.teams.get(x - 1);
@@ -175,14 +176,15 @@ public class Menu {
         } while (choice != 6);
     }
 
-    private void handleTeamsMenu() {
+    private void handleTeamsMenu() throws IOException, ClassNotFoundException {
         int choice;
         do {
             System.out.println("Teams Menu:");
             System.out.println("1. Create Team");
             System.out.println("2. Edit Team");
             System.out.println("3. View Teams");
-            System.out.println("4. Back");
+            System.out.println("4. Save Teams");
+            System.out.println("5. Back");
             System.out.print("Enter your choice: ");
             try {
                 choice = scanner.nextInt();
@@ -205,12 +207,19 @@ public class Menu {
                     league.viewTeams();
                     break;
                 case 4:
+                    league.saveTeamNames();
+                    league.saveTeams();
+                    break;
+                case 5:
+                    league.readTeams(league.readTeamsNames());
+                    break;
+                case 6:
 
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 4);
+        } while (choice != 6);
     }
 
     private void handleMatchesMenu() {
@@ -259,11 +268,10 @@ public class Menu {
         league.viewTeams();
         int teamIndex = scanner.nextInt();
         scanner.nextLine();
-        if (teamIndex == 0){
+        if (teamIndex == 0) {
             return;
         }
         Team team = league.teams.get(teamIndex - 1);
-
 
 
         int positionNumber;
@@ -279,8 +287,7 @@ public class Menu {
                 }
 
                 scanner.nextLine();
-            }
-            catch (InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid position number.");
                 scanner.nextLine();  // Consume the invalid input
                 positionNumber = -1;
@@ -294,10 +301,13 @@ public class Menu {
 
 
         player.enterPlayerInformation();
-        if (isPlayerIdDuplicate(player.getID())) {
+        while (isPlayerIdDuplicate(player.getID())) {
             System.out.println("Player with ID " + player.getID() + " already exists. Please choose a unique ID.");
             int newId = scanner.nextInt();
-            player.setPlayerID(newId);
+            if (!isPlayerIdDuplicate(newId)) {
+                player.setPlayerID(newId);
+                break;
+            }
         }
 
 
@@ -322,15 +332,13 @@ public class Menu {
     }
 
 
-
-
     private void editPlayer() {
         System.out.println("Please enter the team of the player you want to edit (type 0 to back)");
         league.viewTeams();
 
         int x;
         x = scanner.nextInt();
-        if (x == 0){
+        if (x == 0) {
             return;
         }
         Team t = league.teams.get(x - 1);
@@ -344,11 +352,12 @@ public class Menu {
         System.out.println();
 
     }
+
     private void createTeam() {
         System.out.println("Please enter team name . (type 0 to back)");
         String name;
         name = scanner.next();
-        if (name.equals("0")){
+        if (name.equals("0")) {
             return;
         }
         System.out.println("Please enter team Id .");
@@ -360,11 +369,13 @@ public class Menu {
         System.out.println();
 
     }
+
     private void editTeam() {
         // Implement team editing logic
         // You can call methods on the league object to perform the necessary actions
         // For example: league.editTeam();
-        System.out.println("Editing Team...");
+        league.viewTeams();
+        System.out.println("Choose Team Number");
         System.out.println();
     }
 
