@@ -6,7 +6,7 @@ public interface Team_Interface {
     void updateTeam();
     void displayTeamInformation();
     void displayTeamPlayers();
-    void displayTeamMatches();
+
     void addPlayerToTeam(Player player);
     void deletePlayerFromTeam();
 

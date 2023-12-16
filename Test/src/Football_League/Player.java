@@ -3,7 +3,7 @@ package Football_League;
 import java.io.Serializable;
 import java.util.*;
 
-public abstract class Player implements Player_Interface , Serializable {
+public abstract class Player implements Player_Interface, Serializable {
 
     private String Player_Name;
     private int Player_ID;
@@ -13,21 +13,16 @@ public abstract class Player implements Player_Interface , Serializable {
     private float Player_Rank;
 
     public enum position {Goalkeeper, defender, midfielder, forward}
+
     public position player_position;
     public String team;
 
-    public int Tackling_number;
-    public int Successful_passes;
-    public int miss_passes;
-    public int Number_Assists;
+
     public int Number_Goals;
-    public int Number_Shots;
-    public int Total_Tackling_number;
-    public int Total_Successful_passes;
-    public int Total_miss_passes;
-    public int Total_Number_Assists;
+
+
     public int Total_Number_Goals;
-    public int Total_Number_Shots;
+
 
     /////////////////////////////////////////////////////////////////
 
@@ -63,7 +58,6 @@ public abstract class Player implements Player_Interface , Serializable {
             try {
                 System.out.print("Enter player ID: ");
                 int enteredID = scanner.nextInt();
-
 
 
                 validatePositiveNumber(enteredID);
@@ -129,8 +123,7 @@ public abstract class Player implements Player_Interface , Serializable {
                 scanner.nextLine();
             }
         }
-//        System.out.print("Enter player team: ");
-//        this.team = scanner.nextLine();
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,8 +163,6 @@ public abstract class Player implements Player_Interface , Serializable {
                 break;
             } catch (InputMismatchException | IllegalArgumentException ex) {
                 System.out.println("Invalid input for player ID. " + ex.getMessage());
-            } finally {
-//                    scanner.nextLine();
             }
         }
         /////////////////////////////
@@ -280,14 +271,16 @@ public abstract class Player implements Player_Interface , Serializable {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validateString(String input) {
-        if (input == null || input.trim().isEmpty()) {
-            throw new IllegalArgumentException("Input must be a non-empty string.");
+        if (input == null || input.trim().isEmpty() || !input.matches("[a-zA-Z]+")) {
+            throw new IllegalArgumentException("Player name must be a non-empty string without numbers or symbols.");
         }
     }
 
+
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validatescore(int score) {
-        if (score < 0 || score > 60) {
+        if (score < 0 || score > 90) {
             throw new IllegalArgumentException("Player Score must be between 0 and 60.");
         }
     }
@@ -385,31 +378,8 @@ public abstract class Player implements Player_Interface , Serializable {
         return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
     }
 
-    void passes_simulation(Player p1) {
-        p1.Successful_passes = successful_passes(30, 100);
-        p1.miss_passes = unsuccessful_passes(0, p1.Successful_passes);
-    }
-
-    public void player_simulation(Team t1) {
-
-        for (int i = 0; i < 11; i++) {
-            if (t1.players1[i].player_position == position.forward) {
-                passes_simulation(t1.players1[i]);
-                t1.passes_calculation(t1.players1[i]);
-            } else if (t1.players1[i].player_position == position.midfielder) {
-                passes_simulation(t1.players1[i]);
-                t1.passes_calculation(t1.players1[i]);
-            } else if (t1.players1[i].player_position == position.defender) {
-                passes_simulation(t1.players1[i]);
-                t1.passes_calculation(t1.players1[i]);
-            } else {
-                passes_simulation(t1.players1[i]);
-                // unknown error t1.players1[i].GoalKeeper_saves=GoalKeeper_assumption_saves(20,0);
-                t1.passes_calculation(t1.players1[i]);
-            }
-        }
-
-    }
-
 
 }
+
+
+

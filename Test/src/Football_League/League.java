@@ -9,10 +9,11 @@ public class League {
     public List<Team> teams;
     public ArrayList<String> Teams_list = new ArrayList<>();
 
+    private MatchManager matchManager;
+
     public League() {
         this.teams = new ArrayList<>();
     }
-
 
     public void addTeam(Team team) {
         teams.add(team);
@@ -27,15 +28,15 @@ public class League {
     }
 
 
-    public void simulateMatches() {
-        // Simulate matches between all pairs of teams
-        for (int i = 0; i < teams.size(); i++) {
-            for (int j = i + 1; j < teams.size(); j++) {
-                Match match = new Match(teams.get(i), teams.get(j));
-                match.Match_Simulation(teams.get(i), teams.get(j));
-            }
-        }
-    }
+//    public void simulateMatches() {
+//        // Simulate matches between all pairs of teams
+//        for (int i = 0; i < teams.size(); i++) {
+//            for (int j = i + 1; j < teams.size(); j++) {
+//                Match match = new Match(teams.get(i), teams.get(j));
+//                match.Match_Simulation(teams.get(i), teams.get(j));
+//            }
+//        }
+//    }
 
     // Display league standings based on points and goal difference
     public void displayLeagueStandings() {
@@ -68,7 +69,8 @@ public class League {
             System.out.println(counter + ". " + team.getName());
             counter++;
         }
-        System.out.println();
+
+
     }
 
 
@@ -114,14 +116,8 @@ public class League {
     }
 
 
-    // Display information for all matches in the league
-    public void viewMatches() {
-        System.out.println("Matches in the League:");
-        // Assuming you have a Match class with a displayMatchInfo method
-        for (Team team : teams) {
-            team.displayTeamMatches();
-        }
-    }
+
+
 
     public void searchPlayerByName(String playerName) {
         for (Team team : teams) {
@@ -180,4 +176,7 @@ public class League {
          Teams_list =file.ReadList();
         return Teams_list;
     }
+
+
+
 }

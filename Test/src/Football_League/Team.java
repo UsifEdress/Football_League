@@ -1,5 +1,7 @@
 package Football_League;
+
 import java.util.*;
+
 public class Team implements Team_Interface {
     // Attributes
     private String teamName;
@@ -7,6 +9,9 @@ public class Team implements Team_Interface {
     public List<Player> players;
     private Player captain;
     private List<Match> matches;
+
+
+    private String stadium;
     private int goalsScored;
     private int totalGoalsScored;
     private int totalGoalsReceived;
@@ -15,17 +20,22 @@ public class Team implements Team_Interface {
     private int numberOfLoses;
     private int numberOfDraws;
     private int goalsReceived;
-    int Number_of_successful_passes;
-    int Number_of_unsuccessful_passes;
     private static int totalTeams = 0;
     private Scanner scanner = new Scanner(System.in);
 
 
     // getters
 
+    public String getTeamName() {
+        return teamName;
+    }
+
+
+
     public String getName() {
         return teamName;
     }
+
     public int getTeamId() {
         return teamId;
     }
@@ -69,6 +79,11 @@ public class Team implements Team_Interface {
     public int getGoalsReceived() {
         return goalsReceived;
     }
+
+
+    public String getStadium() {
+        return stadium;
+    }
     // Setters
 
     public void setGoalsScored(int goalsScored) {
@@ -84,7 +99,7 @@ public class Team implements Team_Interface {
     }
 
     public void setNumberOfWins() {
-        this.numberOfWins ++;
+        this.numberOfWins++;
     }
 
     public void setNumberOfPoints(int numberOfPoints) {
@@ -92,64 +107,57 @@ public class Team implements Team_Interface {
     }
 
     public void setNumberOfLoses() {
-        this.numberOfLoses ++;
+        this.numberOfLoses++;
     }
 
     public void setNumberOfDraws() {
-        this.numberOfDraws ++;
+        this.numberOfDraws++;
     }
 
     public void setGoalsReceived(int goalsReceived) {
         this.goalsReceived = goalsReceived;
     }
 
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
+    }
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
+    }
+
     // Constructor
-    //public Team(){}
-    public Team(String name, int teamId) {
+
+    public Team(String name, int teamId , String stadium) {
         this.teamName = name;
         this.teamId = teamId;
+        this.stadium = stadium;
         this.players = new ArrayList<>();
-
-    }
-
-
-
-    GoalKeeper goalKeeper = new GoalKeeper();
-    Defender[] defenders = new Defender[4];
-    Midfielder[] midfielders = new Midfielder[3];
-    Forward[] forwards = new Forward[3];
-
-    Player[] players1 = new Player[11];
-
-    private void Make_Team() {
-        players1[0] = goalKeeper;
-        System.arraycopy(defenders, 0, players1, 1, defenders.length);
-        System.arraycopy(midfielders, 0, players1, 5, midfielders.length);
-        System.arraycopy(forwards, 0, players1, 8, forwards.length);
         totalTeams++;
+
     }
 
-    private void setCaptain(Player player) {
+
+    public void setCaptain(Player player) {
         captain = player;
     }
 
 
-    private void updateTeamCaptain(Scanner scanner) {
-        System.out.print("Enter the name of the new team captain: ");
-        String newCaptainName = scanner.next();
+    public void updateTeamCaptain(Scanner scanner) {
+        System.out.print("Enter the number of the player to be the new captain: ");
+        int newCaptainNumber = scanner.nextInt();
 
-        // Find the player with the specified name and set them as the captain
-        for (Player player : players) {
-            if (player.getPlayerName().equalsIgnoreCase(newCaptainName)) {
-                captain = player;
-                System.out.println(player.getPlayerName() + " is now the captain.");
-                return;
-            }
+        if (newCaptainNumber >= 1 && newCaptainNumber <= players.size()) {
+            Player newCaptain = players.get(newCaptainNumber - 1);
+            setCaptain(newCaptain);
+            System.out.println("Player " + newCaptain.getPlayerName() + " is now the new captain.");
+        } else {
+            System.out.println("Invalid player selection. No change in captain.");
         }
-
-        System.out.println("Player with name " + newCaptainName + " not found. No change in captain.");
     }
-
 
 
     @Override
@@ -203,7 +211,7 @@ public class Team implements Team_Interface {
                     System.out.print("Rank: ");
                     player.setRank(scanner.nextInt());
 
-                    // Add the player to the team
+
                     addPlayerToTeam(player);
                     break;
                 case 2:
@@ -222,7 +230,7 @@ public class Team implements Team_Interface {
                     System.out.print("Rank: ");
                     Mid.setRank(scanner.nextInt());
 
-                    // Add the player to the team
+
                     addPlayerToTeam(Mid);
                     break;
                 case 3:
@@ -241,7 +249,7 @@ public class Team implements Team_Interface {
                     System.out.print("Rank: ");
                     def.setRank(scanner.nextInt());
 
-                    // Add the player to the team
+
                     addPlayerToTeam(def);
                     break;
                 case 4:
@@ -260,12 +268,11 @@ public class Team implements Team_Interface {
                     System.out.print("Rank: ");
                     goalie.setRank(scanner.nextInt());
 
-                    // Add the player to the team
+
                     addPlayerToTeam(goalie);
                     break;
                 default:
                     throw new IllegalArgumentException("Invalid position number.");
-
 
 
             }
@@ -275,7 +282,7 @@ public class Team implements Team_Interface {
 
 
     @Override
-    public void updateTeam () {
+    public void updateTeam() {
 
         System.out.println("Update Team Information:");
 
@@ -305,34 +312,23 @@ public class Team implements Team_Interface {
         System.out.println("Team Information:");
         System.out.println("Name: " + teamName);
         System.out.println("Team ID: " + teamId);
+        System.out.println("Team Stadium: " + stadium);
 
-        // Display players
-//        System.out.println("Players:");
-//        for (Player player : players) {
-//            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
-//        }
-//
-//        // Display captain
-//        if (captain != null) {
-//            System.out.println("Captain: " + captain.getPlayerName() + " (ID: " + captain.getID() + ")");
-//        } else {
-//            System.out.println("Captain: Not set");
-//        }
-//
-//        // Display matches
-////            System.out.println("Matches:");  // Assuming you have a Match class
-////            for (Match match : matches) {
-////                System.out.println("  - " + match.getMatchInfo());
-////            }
-        //
-        System.out.println("Goals Scored in match: " +goalsScored);
-        System.out.println("Goals recieved in match: " +goalsReceived);
-        // for testing
-        System.out.println("Total Goals: " +totalGoalsScored);
-        System.out.println("Total Points: " +numberOfPoints);
+
+
+        System.out.println("Players:");
+        for (Player player : players) {
+            System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
+        }
+        if (captain != null) {
+            System.out.println("Captain: " + captain.getPlayerName() + " (ID: " + captain.getID() + ")");
+        } else {
+            System.out.println("Captain: Not set");
+        }
+        System.out.println("Total Goals: " + totalGoalsScored);
+        System.out.println("Total Points: " + numberOfPoints);
         System.out.println();
     }
-
 
 
     @Override
@@ -340,19 +336,23 @@ public class Team implements Team_Interface {
         System.out.println("Team Players:");
 
         for (Player player : players) {
-            System.out.println("Player Name: " + player.getPlayerName());
+            String captainMark = player.equals(captain) ? " (C)" : "";
+            System.out.println("Player Name: " + player.getPlayerName() + captainMark);
             System.out.println("Player ID: " + player.getID());
             System.out.println("Player Number: " + player.getNumber());
             System.out.println("Player Rank: " + player.getRank());
             System.out.println();
         }
     }
+
+
     public void displayTeamPlayersWithID() {
         System.out.println("Players:");
 
         int playerCounter = 1;
         for (Player player : players) {
-            System.out.println("    " + playerCounter + ". " + player.getPlayerName() + " (ID: " + player.getID() + ")");
+            String captainMark = player.equals(captain) ? " (C)" : "";
+            System.out.println("    " + playerCounter + ". " + player.getPlayerName() + " (ID: " + player.getID() + ")" + captainMark);
             playerCounter++;
         }
     }
@@ -360,10 +360,6 @@ public class Team implements Team_Interface {
 
 
 
-    @Override
-    public void displayTeamMatches () {
-        //No matches yet
-    }
 
     @Override
     public void addPlayerToTeam(Player player) {
@@ -389,7 +385,7 @@ public class Team implements Team_Interface {
         while (iterator.hasNext()) {
             Player player = iterator.next();
             if (player.getID() == playerID) {
-                iterator.remove(); // Remove the player from the team's player list
+                iterator.remove();
                 break;
             }
         }
@@ -400,7 +396,7 @@ public class Team implements Team_Interface {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter player name to delete: ");
-        String playerNameToDelete = scanner.nextLine().trim();  // Trim to remove leading/trailing spaces
+        String playerNameToDelete = scanner.nextLine().trim();
 
         System.out.print("Enter player ID to delete: ");
         int playerIdToDelete = scanner.nextInt();
@@ -420,11 +416,11 @@ public class Team implements Team_Interface {
                             iterator.remove();
                             System.out.println("Player " + playerNameToDelete + " (ID: " + playerIdToDelete + ") removed from the team!");
 
-                            // Prompt for the next captain
+
                             System.out.print("Enter the name of the new team captain: ");
                             String newCaptainName = scanner.next();
 
-                            // Find the player with the specified name and set them as the new captain
+
                             for (Player nextCaptain : players) {
                                 if (nextCaptain.getPlayerName().equalsIgnoreCase(newCaptainName)) {
                                     captain = nextCaptain;
@@ -451,26 +447,18 @@ public class Team implements Team_Interface {
     }
 
 
-
-
-
-
-
-
-    public static int calculateTotalTeams () {
+    public static int calculateTotalTeams() {
         return totalTeams;
 
 
     }
 
+
+
     public int Goals_assumption() {
-        return ((int)(Math.random() * 6 + 0));
+        return ((int) (Math.random() * 6 + 0));
     }
 
-    public void passes_calculation(Player p1){
-        this.Number_of_successful_passes=this.Number_of_successful_passes+p1.Successful_passes;
-        this.Number_of_unsuccessful_passes=this.Number_of_unsuccessful_passes+p1.miss_passes;
-    }
 
 }
 

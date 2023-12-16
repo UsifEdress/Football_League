@@ -1,13 +1,54 @@
 package Football_League;
 // do not forget to make an interface for this class
 public class Match {
-    public Match(Team home_Team, Team away_Team) {
-        Home_Team = home_Team;
-        Away_Team = away_Team;
+
+    private Team homeTeam;
+    private Team awayTeam;
+    private String stadium;
+    private String referee;
+    public Match(Team home_Team, Team away_Team , String Stadium, String referee) {
+        homeTeam = home_Team;
+        awayTeam = away_Team;
+        this.stadium = Stadium;
+        this.referee = referee;
+
+    }
+    public String toString() {
+        return homeTeam.getName() + " vs " + awayTeam.getName() +
+                " at " + stadium + " with referee " + referee;
+    }
+    //getters
+    public Team getHomeTeam() {
+        return homeTeam;
     }
 
-    Team Home_Team = new Team("Liverpool",1);
-    Team Away_Team = new Team("Man-United",2);
+    public Team getAwayTeam() {
+        return awayTeam;
+    }
+
+    public String getStadium() {
+        return stadium;
+    }
+
+    public String getReferee() {
+        return referee;
+    }
+    //setters
+    public void setHomeTeam(Team homeTeam) {
+        this.homeTeam = homeTeam;
+    }
+
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public void setStadium(String stadium) {
+        this.stadium = stadium;
+    }
+
+    public void setReferee(String referee) {
+        this.referee = referee;
+    }
 
     void Match_Simulation(Team t1 , Team t2){
         t1.setGoalsScored(t1.Goals_assumption());
