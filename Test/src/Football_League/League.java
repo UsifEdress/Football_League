@@ -153,13 +153,14 @@ public class League {
     public void saveTeams() throws IOException {
         for (Team team : teams) {
             Files file = new Files(team.getName());
-            file.WriteFiles((ArrayList<Player>) team.players);
+            file.WriteFiles(team);
         }
     }
     public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException {
         for (String team : team_list) {
             Files file = new Files(team+".txt");
-            ArrayList<Player> players = file.ReadFiles();
+            Team Team = file.ReadFiles();
+            teams.add(Team);
         }
     }
     public void saveTeamNames() throws IOException {
