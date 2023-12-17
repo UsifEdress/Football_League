@@ -22,7 +22,7 @@ public class Team implements Team_Interface , Serializable {
     private int numberOfDraws;
     private int goalsReceived;
 
-    private double averageAge = calculateAverageAge();
+    //private double averageAge = calculateAverageAge();
 
     public static int totalTeams = 0;
     private transient Scanner scanner = new Scanner(System.in);
@@ -83,9 +83,9 @@ public class Team implements Team_Interface , Serializable {
         return goalsReceived;
     }
 
-    public double getAverageAge() {
-        return averageAge;
-    }
+//    public double getAverageAge() {
+//        return averageAge;
+//    }
 
     public String getStadium() {
         return stadium;
@@ -460,17 +460,17 @@ public class Team implements Team_Interface , Serializable {
         return ((int) (Math.random() * 6 + 0));
     }
 
-    public double calculateAverageAge()
-    {
-        double sumAge=0;
-        double numberOfPlayers = 0;
-        for (Player player : players) {
-            sumAge+=player.getAge();
-            numberOfPlayers=players.size();
-        }
-        sumAge /= numberOfPlayers;
-        return sumAge;
-    }
+//    public double calculateAverageAge()
+//    {
+//        double sumAge=0;
+//        double numberOfPlayers = 0;
+//        for (Player player : players) {
+//            sumAge+=player.getAge();
+//            numberOfPlayers=players.size();
+//        }
+//        sumAge /= numberOfPlayers;
+//        return sumAge;
+//    }
 
 
 

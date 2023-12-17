@@ -1,10 +1,11 @@
 package Football_League;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
 // do not forget to make an interface for this class
-public class Match {
+public class Match implements Serializable {
     private static int nextId = 1;
 
 
