@@ -31,7 +31,10 @@ public class Menu implements Serializable {
     }
 
     public void start() throws IOException, ClassNotFoundException , FileNotFoundException {
-        league.readTeams(league.readTeamsNames());
+        try {league.readTeams(league.readTeamsNames());}
+        catch (FileNotFoundException e) {}
+        catch (IOException e) {}
+
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
