@@ -7,10 +7,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.time.LocalDate;
+import java.io.*;
+import java.util.ArrayList;
 
 public class Menu implements Serializable {
+
+    private static final long serialVersionUID = 5398983095233291215L;
+    private static final File file = new File("menu.txt") ;
     private League league;
-    private Scanner scanner;
+    private transient Scanner scanner;
 
     private MatchManager matchManager;
 
@@ -31,9 +36,9 @@ public class Menu implements Serializable {
     }
 
     public void start() throws IOException, ClassNotFoundException , FileNotFoundException {
-        try {league.readTeams(league.readTeamsNames());}
-        catch (FileNotFoundException e) {}
-        catch (IOException e) {}
+//        try {league.readTeams(league.readTeamsNames());}
+//        catch (FileNotFoundException e) {}
+//        catch (IOException e) {}
 
         System.out.println("Welcome to football league simulator !");
         int choice;
@@ -51,6 +56,13 @@ public class Menu implements Serializable {
                 choice = -1;
 
             }
+            catch(NullPointerException e)
+            {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine();
+
+                choice = -1;
+            }
 
 
             switch (choice) {
@@ -64,8 +76,8 @@ public class Menu implements Serializable {
                     handleMatchesMenu();
                     break;
                 case 4:
-                    league.saveTeamNames();
-                    league.saveTeams();
+//                    league.saveTeamNames();
+//                    league.saveTeams();
                     System.out.println("Exiting the program. Goodbye!");
                     break;
                 default:
@@ -1362,6 +1374,22 @@ public class Menu implements Serializable {
         return !name.trim().isEmpty() && name.matches("[a-zA-Z\\s-]+");
     }
 
+//    void saveMenu() throws IOException , NotSerializableException , FileNotFoundException{
+//        FileOutputStream fos = new FileOutputStream(file);
+//        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//        oos.writeObject(this);
+//        oos.flush();
+//        oos.close();
+//        fos.close();
+//    }
+//    Menu readMenu() throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
+//        FileInputStream fis = new FileInputStream(file);
+//        ObjectInputStream ois = new ObjectInputStream(fis);
+//        Menu menu1 = (Menu) ois.readObject();
+//        ois.close();
+//        fis.close();
+//        return menu1;
+//    }
 
 
 
