@@ -3,7 +3,7 @@ package Football_League;
 import java.io.Serializable;
 import java.util.*;
 
-public class Team implements Team_Interface , Serializable {
+public class Team implements Team_Interface, Serializable {
     // Attributes
     private String teamName;
     private int teamId;
@@ -12,17 +12,20 @@ public class Team implements Team_Interface , Serializable {
     private List<Match> matches;
 
 
-    private String stadium;
-    private int goalsScored;
-    private int totalGoalsScored;
-    private int totalGoalsReceived;
-    private int numberOfWins;
-    private int numberOfPoints;
-    private int numberOfLoses;
-    private int numberOfDraws;
-    private int goalsReceived;
 
-    private double averageAge = calculateAverageAge();
+
+
+    private String stadium;
+    private int goalsScored = 0;
+    private int totalGoalsScored = 0;
+    private int totalGoalsReceived = 0;
+    private int numberOfWins = 0;
+    private int numberOfPoints = 0;
+    private int numberOfLoses = 0;
+    private int numberOfDraws = 0;
+    private int goalsReceived = 0;
+
+//    private double averageAge = calculateAverageAge();
 
     public static int totalTeams = 0;
     private transient Scanner scanner = new Scanner(System.in);
@@ -83,9 +86,9 @@ public class Team implements Team_Interface , Serializable {
         return goalsReceived;
     }
 
-    public double getAverageAge() {
-        return averageAge;
-    }
+//    public double getAverageAge() {
+//        return averageAge;
+//    }
 
     public String getStadium() {
         return stadium;
@@ -97,11 +100,11 @@ public class Team implements Team_Interface , Serializable {
     }
 
     public void setTotalGoalsScored(int totalGoalsScored) {
-        this.totalGoalsScored += totalGoalsScored;
+        this.totalGoalsScored = totalGoalsScored;
     }
 
     public void setTotalGoalsReceived(int totalGoalsReceived) {
-        this.totalGoalsReceived += totalGoalsReceived;
+        this.totalGoalsReceived = totalGoalsReceived;
     }
 
     public void setNumberOfWins() {
@@ -109,7 +112,7 @@ public class Team implements Team_Interface , Serializable {
     }
 
     public void setNumberOfPoints(int numberOfPoints) {
-        this.numberOfPoints += numberOfPoints;
+        this.numberOfPoints = numberOfPoints;
     }
 
     public void setNumberOfLoses() {
@@ -330,8 +333,9 @@ public class Team implements Team_Interface , Serializable {
         } else {
             System.out.println("Captain: Not set");
         }
-        System.out.println("Total Goals: " + totalGoalsScored);
-        System.out.println("Total Points: " + numberOfPoints);
+        System.out.println("Total Points: " + getNumberOfPoints());
+        System.out.println("Total Goals: " + getTotalGoalsScored());
+
         System.out.println();
     }
 
@@ -460,20 +464,17 @@ public class Team implements Team_Interface , Serializable {
         return ((int) (Math.random() * 6 + 0));
     }
 
-    public double calculateAverageAge()
-    {
-        double sumAge=0;
-        double numberOfPlayers = 0;
-        for (Player player : players) {
-            sumAge+=player.getAge();
-            numberOfPlayers=players.size();
-        }
-        sumAge /= numberOfPlayers;
-        return sumAge;
-    }
-
-
-
+    //    public double calculateAverageAge()
+//    {
+//        double sumAge=0;
+//        double numberOfPlayers = 0;
+//        for (Player player : players) {
+//            sumAge+=player.getAge();
+//            numberOfPlayers=players.size();
+//        }
+//        sumAge /= numberOfPlayers;
+//        return sumAge;
+//    }
 
 
 }
