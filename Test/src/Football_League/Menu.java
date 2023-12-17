@@ -1,12 +1,14 @@
 package Football_League;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.time.LocalDate;
 
-public class Menu {
+public class Menu implements Serializable {
     private League league;
     private Scanner scanner;
 
@@ -28,7 +30,8 @@ public class Menu {
         System.out.print("Enter your choice: ");
     }
 
-    public void start() throws IOException, ClassNotFoundException {
+    public void start() throws IOException, ClassNotFoundException , FileNotFoundException {
+        league.readTeams(league.readTeamsNames());
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
@@ -58,6 +61,8 @@ public class Menu {
                     handleMatchesMenu();
                     break;
                 case 4:
+                    league.saveTeamNames();
+                    league.saveTeams();
                     System.out.println("Exiting the program. Goodbye!");
                     break;
                 default:

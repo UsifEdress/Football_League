@@ -6,15 +6,15 @@ import java.util.ArrayList;
 public class Files implements Serializable {
     private File file;
 
-    public Files(String team_Name) {
+    public Files(String team_Name)  throws IOException , NotSerializableException , FileNotFoundException{
         //team_Name = team_Name + ".txt";
         file = new File(team_Name);
     }
-    public Files() {
+    public Files() throws IOException , NotSerializableException , FileNotFoundException {
         file = new File("Team_list.txt");
     }
 
-    void WriteFiles(Team t1) throws IOException , NotSerializableException {
+    void WriteFiles(Team t1) throws IOException , NotSerializableException , FileNotFoundException{
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(t1);
@@ -22,7 +22,7 @@ public class Files implements Serializable {
         oos.close();
         fos.close();
     }
-    void WriteList(ArrayList<String> Teams_list) throws IOException , NotSerializableException{
+    void WriteList(ArrayList<String> Teams_list) throws IOException , NotSerializableException, FileNotFoundException{
         FileOutputStream fos = new FileOutputStream(file);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(Teams_list);
@@ -32,7 +32,7 @@ public class Files implements Serializable {
     }
 
 
-    Team ReadFiles() throws IOException, ClassNotFoundException ,NotSerializableException {
+    Team ReadFiles() throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Team Team1 = (Team) ois.readObject();
@@ -40,7 +40,7 @@ public class Files implements Serializable {
         fis.close();
         return Team1;
     }
-    ArrayList<String> ReadList() throws IOException, ClassNotFoundException ,NotSerializableException {
+    ArrayList<String> ReadList() throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
         FileInputStream fis = new FileInputStream(file);
         ObjectInputStream ois = new ObjectInputStream(fis);
         ArrayList<String> Teams_list = (ArrayList<String>) ois.readObject();

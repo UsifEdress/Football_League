@@ -7,14 +7,7 @@ public class GoalKeeper extends Player implements Serializable {
         super();
         this.player_position = position.Goalkeeper;
     }
-    public int GoalKeeper_saves;
-    public GoalKeeper(String name, int player_ID, int player_Number, int player_Age, int player_Score, int player_Rank, String team) {
-        super(name, player_ID, player_Number, player_Age, player_Score, player_Rank, team);
-        this.player_position=position.Goalkeeper;
-    }
-    int GoalKeeper_assumption_saves(int upper_limit , int lower_limit){
-        return (int)((Math.random() * (upper_limit-lower_limit)) + lower_limit);
-    }
+
     public void displayPlayerInformation() {
         System.out.println("Player Information:");
         System.out.println("Name: " + this.getPlayerName());

@@ -1,6 +1,7 @@
 package Football_League;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.Serializable;
@@ -152,13 +153,13 @@ public class League implements Serializable {
     }
 
 
-    public void saveTeams() throws IOException , NotSerializableException {
+    public void saveTeams() throws IOException , NotSerializableException, FileNotFoundException {
         for (Team team : teams) {
             Files file = new Files(team.getName()+".txt");
             file.WriteFiles(team);
         }
     }
-    public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException , NotSerializableException {
+    public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException , NotSerializableException , FileNotFoundException {
         teams.clear();
         for (String team : team_list) {
             Files file = new Files(team+".txt");
@@ -166,7 +167,7 @@ public class League implements Serializable {
             teams.add(Team);
         }
     }
-    public void saveTeamNames() throws IOException , NotSerializableException {
+    public void saveTeamNames() throws IOException , NotSerializableException , FileNotFoundException{
         Files file = new Files();
         Teams_list.clear();
         for (Team team : teams) {
@@ -175,7 +176,7 @@ public class League implements Serializable {
         file.WriteList(Teams_list);
     }
 
-    public ArrayList<String> readTeamsNames() throws IOException, ClassNotFoundException , NotSerializableException {
+    public ArrayList<String> readTeamsNames() throws IOException, ClassNotFoundException , NotSerializableException , FileNotFoundException {
         Files file = new Files();
          Teams_list =file.ReadList();
         return Teams_list;

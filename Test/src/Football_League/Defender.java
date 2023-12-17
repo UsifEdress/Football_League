@@ -1,6 +1,8 @@
 package Football_League;
 
-public class Defender extends Player{
+import java.io.Serializable;
+
+public class Defender extends Player implements Serializable {
     public Defender() {
         super();
         this.player_position = position.defender;
