@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Files implements Serializable {
     private File file;
+    private static final File Leaguefile = new File("League.txt");
 
     public Files(String team_Name)  throws IOException , NotSerializableException , FileNotFoundException{
         //team_Name = team_Name + ".txt";
@@ -30,7 +31,7 @@ public class Files implements Serializable {
         oos.close();
         fos.close();
     }
-
+//
 
     Team ReadFiles() throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
         FileInputStream fis = new FileInputStream(file);
@@ -47,5 +48,31 @@ public class Files implements Serializable {
         ois.close();
         fis.close();
         return Teams_list;
+    }
+    static void WriteLeague(League l1) throws IOException , NotSerializableException , FileNotFoundException{
+        FileOutputStream fos = new FileOutputStream(Leaguefile);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        oos.writeObject(l1);
+        oos.flush();
+        oos.close();
+        fos.close();
+    }
+    static League ReadLeague() throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
+        FileInputStream fis = new FileInputStream(Leaguefile);
+        ObjectInputStream ois = new ObjectInputStream(fis);
+        League l1 = (League) ois.readObject();
+        ois.close();
+        fis.close();
+        return l1;
+    }
+    static boolean is_found()throws IOException, ClassNotFoundException ,NotSerializableException , FileNotFoundException{
+        if(Leaguefile.exists())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
