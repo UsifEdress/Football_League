@@ -1,6 +1,9 @@
 package Football_League;
+
+import java.io.Serializable;
+
 // do not forget to make an interface for this class
-public class Match {
+public class Match implements Serializable {
 
     private Team homeTeam;
     private Team awayTeam;

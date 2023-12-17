@@ -1,11 +1,13 @@
 package Football_League;
 
 import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.*;
 
-public class Menu {
+public class Menu implements Serializable {
     private League league;
-    private Scanner scanner;
+    private  transient Scanner scanner;
 
     private MatchManager matchManager;
 
@@ -26,6 +28,7 @@ public class Menu {
     }
 
     public void start() throws IOException, ClassNotFoundException {
+        league.readTeams(league.readTeamsNames());
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
@@ -55,6 +58,8 @@ public class Menu {
                     handleMatchesMenu();
                     break;
                 case 4:
+                    league.saveTeamNames();
+                    league.saveTeams();
                     System.out.println("Exiting the program. Goodbye!");
                     break;
                 default:
@@ -442,7 +447,7 @@ public class Menu {
     }
 
 
-    private void handleTeamsMenu() throws IOException, ClassNotFoundException {
+    private void handleTeamsMenu() throws IOException, ClassNotFoundException , NotSerializableException {
         int choice;
         do {
             System.out.println();
@@ -474,7 +479,7 @@ public class Menu {
                     break;
                 case 3:
                     league.viewTeams();
-                    System.out.println("Total teams : " + Team.calculateTotalTeams());
+                    league.sdada();
                     break;
                 case 4:
                     displayTeamMatches();
@@ -568,6 +573,7 @@ public class Menu {
 
         Team team = new Team(name, id, stadium);
         league.teams.add(team);
+        //league.Teams_list.add(team.getname);
 
         System.out.println("Team " + name + " Created");
         matchManager.updateTeams(league.teams);

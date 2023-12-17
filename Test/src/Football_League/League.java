@@ -2,10 +2,12 @@ package Football_League;
 
 
 import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class League {
+public class League implements Serializable {
     public List<Team> teams;
     public ArrayList<String> Teams_list = new ArrayList<>();
 
@@ -150,32 +152,39 @@ public class League {
     }
 
 
-    public void saveTeams() throws IOException {
+    public void saveTeams() throws IOException , NotSerializableException {
         for (Team team : teams) {
-            Files file = new Files(team.getName());
+            Files file = new Files(team.getName()+".txt");
             file.WriteFiles(team);
         }
     }
-    public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException {
+    public void readTeams(ArrayList<String>team_list) throws IOException, ClassNotFoundException , NotSerializableException {
+        teams.clear();
         for (String team : team_list) {
             Files file = new Files(team+".txt");
             Team Team = file.ReadFiles();
             teams.add(Team);
         }
     }
-    public void saveTeamNames() throws IOException {
+    public void saveTeamNames() throws IOException , NotSerializableException {
         Files file = new Files();
-
+        Teams_list.clear();
         for (Team team : teams) {
             Teams_list.add(team.getName());
         }
         file.WriteList(Teams_list);
     }
 
-    public ArrayList<String> readTeamsNames() throws IOException, ClassNotFoundException {
+    public ArrayList<String> readTeamsNames() throws IOException, ClassNotFoundException , NotSerializableException {
         Files file = new Files();
          Teams_list =file.ReadList();
         return Teams_list;
+    }
+
+    public void sdada()
+    {
+        int x = Team.calculateTotalTeams() + Teams_list.size();
+        System.out.println("total teams :" + x);
     }
 
 

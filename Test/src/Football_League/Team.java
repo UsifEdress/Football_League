@@ -1,8 +1,9 @@
 package Football_League;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Team implements Team_Interface {
+public class Team implements Team_Interface , Serializable {
     // Attributes
     private String teamName;
     private int teamId;
@@ -23,7 +24,7 @@ public class Team implements Team_Interface {
 
 
     public static int totalTeams = 0;
-    private Scanner scanner = new Scanner(System.in);
+    private transient Scanner scanner = new Scanner(System.in);
 
 
     // getters
@@ -141,7 +142,6 @@ public class Team implements Team_Interface {
         this.stadium = stadium;
         this.players = new ArrayList<>();
         totalTeams++;
-
     }
 
 

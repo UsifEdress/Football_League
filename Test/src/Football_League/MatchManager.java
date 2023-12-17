@@ -1,9 +1,10 @@
 package Football_League;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.*;
 
-public class MatchManager {
+public class MatchManager implements Serializable {
     private List<Team> teams;
     private List<Match> matches;
     private List<String> referees;

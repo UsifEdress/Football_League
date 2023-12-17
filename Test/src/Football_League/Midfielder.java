@@ -1,6 +1,8 @@
 package Football_League;
 
-public class Midfielder extends Player {
+import java.io.Serializable;
+
+public class Midfielder extends Player implements Serializable {
 
     public Midfielder() {
         super();
