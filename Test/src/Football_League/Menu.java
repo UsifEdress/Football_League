@@ -195,6 +195,18 @@ public class Menu {
                 break;
             }
         }
+        while (isKitNumberDuplicate(player.getNumber(), team)) {
+            System.out.println("Player with Number " + player.getNumber() + " already exists. Please choose a unique Number.");
+            int newNum = scanner.nextInt();
+
+            if (!isKitNumberDuplicate(newNum, team)) {
+                player.setNumber(newNum);
+                break;
+            } else {
+                System.out.println("Player with Number " + newNum + " already exists. Please choose a unique Number.");
+            }
+        }
+
 
 
         player.setTeam(team.getName());
@@ -216,6 +228,15 @@ public class Menu {
         }
         return false;
     }
+    public boolean isKitNumberDuplicate(int jerseyNumber, Team team) {
+        for (Player existingPlayer : team.getPlayers()) {
+            if (existingPlayer.getNumber() == jerseyNumber) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     private void editPlayer() {
         System.out.println("Please enter the team of the player you want to edit (type 0 to back)");
@@ -429,7 +450,7 @@ public class Menu {
             System.out.println("1. Create Team");
             System.out.println("2. Edit Team");
             System.out.println("3. View Teams");
-            System.out.println("4. Save Teams");
+            System.out.println("4. Display team's Matches");
             System.out.println("5. Display Team's Info");
             System.out.println("6. Delete a team");
             System.out.println("7. Back");
@@ -456,8 +477,7 @@ public class Menu {
                     System.out.println("Total teams : " + Team.calculateTotalTeams());
                     break;
                 case 4:
-                    league.saveTeamNames();
-                    league.saveTeams();
+                    displayTeamMatches();
                     break;
 
                 case 5:
@@ -526,13 +546,18 @@ public class Menu {
             try {
                 System.out.println("Please enter team Stadium:");
 
+
                 stadium = scanner.nextLine();
 
-                if (validateName(stadium)) {
-                    break;
-                } else {
+
+                if (!validateName(stadium)) {
                     System.out.println("Invalid input for team stadium. Make sure it is a non-empty string without numbers or other symbols.");
                 }
+                if (isStadiumNameDuplicate(stadium)){
+                    System.out.println("Team with Stadium " + stadium + " already exists. Please choose a unique Stadium.");
+                }
+                if (validateName(stadium) &&!isStadiumNameDuplicate(stadium))
+                    break;
 
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid name for team stadium.");
@@ -712,6 +737,16 @@ public class Menu {
         return false;
     }
 
+    private boolean isStadiumNameDuplicate(String name) {
+        for (Team team : league.teams) {
+            if (team.getStadium().equalsIgnoreCase(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     private void handleMatchesMenu() {
         int choice;
@@ -763,8 +798,10 @@ public class Menu {
     }
 
     private boolean validateName(String name) {
-        return !name.trim().isEmpty() && name.matches("[a-zA-Z]+");
+
+        return !name.trim().isEmpty() && name.matches("[a-zA-Z ]+");
     }
+
 
     public void teamPlayers() {
         System.out.println("View Team's Players");
@@ -951,15 +988,31 @@ public class Menu {
         Team teamToDelete = league.teams.get(teamNumber - 1);
 
         System.out.println("Are you sure you want to delete the team " + teamToDelete.getName() + "? , all players of this team will be deleted (y/n): ");
-        String confirmation = scanner.next();
 
-        if (confirmation.equalsIgnoreCase("y")) {
-            league.teams.remove(teamToDelete);
-            matchManager.updateTeams(league.teams);
-            System.out.println("Team " + teamToDelete.getName() + " has been deleted.");
-        } else {
-            System.out.println("Deletion canceled. The team remains unchanged.");
+        String confirmation;
+        boolean validInput = false;
+
+        while (true) {
+            confirmation = scanner.next();
+
+            if (confirmation.equalsIgnoreCase("y")) {
+                league.teams.remove(teamToDelete);
+                matchManager.updateTeams(league.teams);
+                System.out.println("Team " + teamToDelete.getName() + " has been deleted.");
+                Team.totalTeams--;
+                validInput = true;
+            } else if (confirmation.equalsIgnoreCase("n")) {
+                System.out.println("Deletion canceled. The team remains unchanged.");
+                validInput = true;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' or 'n'.");
+            }
+
+            if (validInput) {
+                break;
+            }
         }
     }
+
 
 }

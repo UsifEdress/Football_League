@@ -42,7 +42,7 @@ public class MatchManager {
                 Match homeMatch = new Match(team1, team2, team1.getStadium(), selectedReferee);
                 matches.add(homeMatch);
                 selectedReferee = referees.get(random.nextInt(referees.size()));
-                Match awayMatch = new Match(team2, team1, team1.getStadium(), selectedReferee);
+                Match awayMatch = new Match(team2, team1, team2.getStadium(), selectedReferee);
                 matches.add(awayMatch);
             }
         }

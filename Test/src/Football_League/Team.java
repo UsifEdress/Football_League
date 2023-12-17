@@ -20,7 +20,9 @@ public class Team implements Team_Interface {
     private int numberOfLoses;
     private int numberOfDraws;
     private int goalsReceived;
-    private static int totalTeams = 0;
+
+
+    public static int totalTeams = 0;
     private Scanner scanner = new Scanner(System.in);
 
 
@@ -29,7 +31,6 @@ public class Team implements Team_Interface {
     public String getTeamName() {
         return teamName;
     }
-
 
 
     public String getName() {
@@ -81,6 +82,8 @@ public class Team implements Team_Interface {
     }
 
 
+
+
     public String getStadium() {
         return stadium;
     }
@@ -121,6 +124,7 @@ public class Team implements Team_Interface {
     public void setStadium(String stadium) {
         this.stadium = stadium;
     }
+
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
@@ -131,7 +135,7 @@ public class Team implements Team_Interface {
 
     // Constructor
 
-    public Team(String name, int teamId , String stadium) {
+    public Team(String name, int teamId, String stadium) {
         this.teamName = name;
         this.teamId = teamId;
         this.stadium = stadium;
@@ -315,7 +319,6 @@ public class Team implements Team_Interface {
         System.out.println("Team Stadium: " + stadium);
 
 
-
         System.out.println("Players:");
         for (Player player : players) {
             System.out.println("  - " + player.getPlayerName() + " (ID: " + player.getID() + ")");
@@ -356,9 +359,6 @@ public class Team implements Team_Interface {
             playerCounter++;
         }
     }
-
-
-
 
 
     @Override
@@ -452,7 +452,6 @@ public class Team implements Team_Interface {
 
 
     }
-
 
 
     public int Goals_assumption() {

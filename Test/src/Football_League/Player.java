@@ -271,10 +271,11 @@ public abstract class Player implements Player_Interface, Serializable {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validateString(String input) {
-        if (input == null || input.trim().isEmpty() || !input.matches("[a-zA-Z]+")) {
-            throw new IllegalArgumentException("Player name must be a non-empty string without numbers or symbols.");
+        if (input == null || input.trim().isEmpty() || !input.matches("[a-zA-Z ]+")) {
+            throw new IllegalArgumentException("String must be a non-empty string without numbers or symbols.");
         }
     }
+
 
 
 
