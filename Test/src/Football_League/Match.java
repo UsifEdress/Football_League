@@ -24,12 +24,18 @@ public class Match {
         this.referee = referee;
         this.matchDate = matchDate;
     }
-
+        //System.out.println("Match: " + (i + 1));
+    //            System.out.println("Match ID: " + match.getMatchId());
+    //            System.out.println("Date: " + match.getMatchDate());
+    //            System.out.println("Teams: " + match.getHomeTeam().getName() + " vs " + match.getAwayTeam().getName());
+    //            System.out.println("Stadium: " + match.getStadium());
+    //            System.out.println("Referee: " + match.getReferee());
+    //            System.out.println("------------------------");
 
 
     public String toString() {
-        return homeTeam.getName() + " vs " + awayTeam.getName() +
-                " at " + stadium + " with referee " + referee;
+        return (homeTeam.getName() + " vs " + awayTeam.getName() +
+                "\nStadium : " + stadium + "\nreferee : " + referee);
     }
     //getters
     public Team getHomeTeam() {

@@ -71,7 +71,7 @@ public class MatchManager {
                 matchIdCounter++;
                 matches.add(awayMatch);
             }
-            currentDate = currentDate.plusDays(2); // Increment the date for each new round
+            currentDate = currentDate.plusDays(2);
         }
     }
     public void displayMatchDetails(Match match) {

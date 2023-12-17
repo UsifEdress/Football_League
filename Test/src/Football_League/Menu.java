@@ -837,8 +837,12 @@ public class Menu {
                     if (match.getHomeTeam().equals(selectedTeam) || match.getAwayTeam().equals(selectedTeam)) {
                         teamFound = true;
 
-                        String homeAwayIndication = match.getHomeTeam().equals(selectedTeam) ? "(Home)" : "(Away)";
-                        System.out.println(match + " " + homeAwayIndication);
+                        String homeAwayIndication = match.getHomeTeam().equals(selectedTeam) ? "Home" : "Away";
+                        System.out.println(homeAwayIndication+" Match");
+
+                        System.out.println(match);
+                        System.out.println("Match Date :" + match.getMatchDate());
+                        System.out.println("------------------------");
                     }
                 }
 
@@ -1053,7 +1057,7 @@ public class Menu {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
     private void createMatch() {
