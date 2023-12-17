@@ -31,7 +31,15 @@ public class League implements Serializable {
     }
 
 
-//
+//    public void simulateMatches() {
+//        // Simulate matches between all pairs of teams
+//        for (int i = 0; i < teams.size(); i++) {
+//            for (int j = i + 1; j < teams.size(); j++) {
+//                Match match = new Match(teams.get(i), teams.get(j));
+//                match.Match_Simulation(teams.get(i), teams.get(j));
+//            }
+//        }
+//    }
 
     // Display league standings based on points and goal difference
     public void displayLeagueStandings() {
@@ -52,7 +60,7 @@ public class League implements Serializable {
         for (Team team : teams) {
             System.out.println(position + ". " + team.getName() +
                     " - Points: " + team.getNumberOfPoints() +
-                    ",  Goal Difference: " + (team.getTotalGoalsScored() - team.getTotalGoalsReceived()));
+                    ", Goal Difference: " + (team.getTotalGoalsScored() - team.getTotalGoalsReceived()));
             position++;
         }
     }

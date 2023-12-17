@@ -31,7 +31,7 @@ public class Menu implements Serializable {
     }
 
     public void start() throws IOException, ClassNotFoundException , FileNotFoundException {
-//        league.readTeams(league.readTeamsNames());
+        league.readTeams(league.readTeamsNames());
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
@@ -524,7 +524,7 @@ public class Menu implements Serializable {
                 case 3:
 
                     league.viewTeams();
-                    System.out.println("Total teams : " + (Team.calculateTotalTeams()+league.Teams_list.size()));
+                    System.out.println("Total teams : " + Team.calculateTotalTeams());
                     break;
                 case 4:
                     if (league.teams.isEmpty()) {
@@ -847,12 +847,6 @@ public class Menu implements Serializable {
 
                         System.out.println(match);
                         System.out.println("Match Date :" + match.getMatchDate());
-                        if (match.isSimulated()){
-                            System.out.println("Match Score : " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore());
-                        }
-                        else{
-                            System.out.println("Match Score : Not Played Yet" );
-                        }
                         System.out.println("------------------------");
                     }
                 }
@@ -860,7 +854,6 @@ public class Menu implements Serializable {
                 if (!teamFound) {
                     System.out.println("No matches found for Team: " + selectedTeam.getName());
                 }
-
             } else {
                 System.out.println("Invalid team selection.");
             }
@@ -1032,8 +1025,7 @@ public class Menu implements Serializable {
             System.out.println("2. Edit Match");
             System.out.println("3. Display all Matches");
             System.out.println("4. Delete a Match");
-            System.out.println("5. Simulate Matches");
-            System.out.println("6. Back");
+            System.out.println("5. Back");
             System.out.print("Enter your choice: ");
 
             try {
@@ -1055,44 +1047,22 @@ public class Menu implements Serializable {
                     createMatch();
                     break;
                 case 2:
-                    if (matchManager.matches.isEmpty()){
-                        System.out.println("There is no Matches to edit !");
-                        System.out.println();
-                        break;
-                    }
+
                     editMatch();
                     break;
                 case 3:
-                    if (matchManager.matches.isEmpty()){
-                        System.out.println("There is no Matches to view !");
-                        System.out.println();
-                        break;
-                    }
                     displayMatches();
                     break;
                 case 4:
-                    if (matchManager.matches.isEmpty()){
-                        System.out.println("There is no Matches to delete !");
-                        System.out.println();
-                        break;
-                    }
                     deleteMatch();
                     break;
                 case 5:
-                    if (matchManager.matches.isEmpty()){
-                        System.out.println("There is no Matches to simulate !");
-                        System.out.println();
-                        break;
-                    }
-                    simulateMatch();
-                    break;
-                case 6:
                     System.out.println("Returning to main menu.");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 6);
+        } while (choice != 5);
     }
 
     private void createMatch() {
@@ -1301,70 +1271,6 @@ public class Menu implements Serializable {
                 System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
             }
         }
-        if (match.isSimulated()) {
-            while (true) {
-                System.out.print("Do you want to update the match score? (y/n): ");
-                choice = scanner.nextLine().trim().toLowerCase();
-
-                if ("y".equals(choice)) {
-                    while (true) {
-                        try {
-                            if (match.getHomeTeamScore() > match.getAwayTeamScore()){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()-3);
-                            }
-                            if (match.getHomeTeamScore() == match.getAwayTeamScore()){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()-1);
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()-1);
-                            }
-                            else{
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()-3);
-                            }
-
-                            match.getHomeTeam().setTotalGoalsScored(match.getHomeTeam().getTotalGoalsScored() - match.getHomeTeamScore());
-                            match.getAwayTeam().setTotalGoalsScored(match.getAwayTeam().getTotalGoalsScored() - match.getAwayTeamScore());
-                            match.getHomeTeam().setTotalGoalsReceived(match.getHomeTeam().getTotalGoalsReceived() - match.getAwayTeamScore());
-                            match.getAwayTeam().setTotalGoalsReceived(match.getAwayTeam().getTotalGoalsReceived() - match.getHomeTeamScore());
-                            System.out.print("Please enter the new home team score: ");
-                            int newHomeScore = scanner.nextInt();
-                            System.out.print("Please enter the new away team score: ");
-                            int newAwayScore = scanner.nextInt();
-                            scanner.nextLine();
-
-                            if (newHomeScore >newAwayScore){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+3);
-                            }
-                            if (newHomeScore == newAwayScore){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+1);
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()+1);
-                            }
-                            else{
-                                match.getAwayTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+3);
-                            }
-                            match.getHomeTeam().setTotalGoalsScored(match.getHomeTeam().getTotalGoalsScored() + newHomeScore);
-                            match.getAwayTeam().setTotalGoalsScored(match.getAwayTeam().getTotalGoalsScored() - newAwayScore);
-                            match.getHomeTeam().setTotalGoalsReceived(match.getHomeTeam().getTotalGoalsReceived() - newAwayScore);
-                            match.getAwayTeam().setTotalGoalsReceived(match.getAwayTeam().getTotalGoalsReceived() - newHomeScore);
-
-                            match.setHomeTeamScore(newHomeScore);
-                            match.setAwayTeamScore(newAwayScore);
-
-
-
-                            System.out.println("Match score updated successfully.");
-                            break;
-                        } catch (InputMismatchException e) {
-                            System.out.println("Error: Invalid input. Please enter valid integer scores.");
-                            scanner.nextLine();
-                        }
-                        break;
-                    }
-                } else if ("n".equals(choice)) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
-                }
-            }
-        }
 
         System.out.println("Match information updated successfully!");
     }
@@ -1432,23 +1338,6 @@ public class Menu implements Serializable {
             String confirmation = scanner.nextLine().trim().toLowerCase();
 
             if ("y".equals(confirmation)) {
-
-                if (matchToDelete.getHomeTeamScore() > matchToDelete.getAwayTeamScore()){
-                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints()-3);
-                }
-                else if (matchToDelete.getHomeTeamScore() == matchToDelete.getAwayTeamScore()){
-                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints()-1);
-                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints()-1);
-                }
-                else{
-                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints()-3);
-                }
-
-
-                matchToDelete.getHomeTeam().setTotalGoalsScored(matchToDelete.getHomeTeam().getTotalGoalsScored() - matchToDelete.getHomeTeamScore());
-                matchToDelete.getAwayTeam().setTotalGoalsScored(matchToDelete.getAwayTeam().getTotalGoalsScored() - matchToDelete.getAwayTeamScore());
-                matchToDelete.getHomeTeam().setTotalGoalsReceived(matchToDelete.getHomeTeam().getTotalGoalsReceived() - matchToDelete.getAwayTeamScore());
-                matchToDelete.getAwayTeam().setTotalGoalsReceived(matchToDelete.getAwayTeam().getTotalGoalsReceived() - matchToDelete.getHomeTeamScore());
                 matchManager.matches.remove(matchToDelete);
                 System.out.println("Deletion successful.");
                 break;
@@ -1460,93 +1349,7 @@ public class Menu implements Serializable {
             }
         }
     }
-    private void simulateMatch() {
-        boolean inputMismatch;
-        do {
-            inputMismatch = false;
-            try {
-                System.out.println("Simulate Matches Menu:");
-                System.out.println("1. Simulate matches till a certain date");
-                System.out.println("2. Simulate all matches");
-                System.out.println();
-                System.out.print("Choose an option (or 0 to back) :");
 
-                int option = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (option) {
-                    case 1:
-//                        simulateMatchesTillDate();
-                        break;
-                    case 2:
-                        simulateAllMatches();
-                        break;
-                    case 0:
-                        System.out.println("Returning to the previous menu.");
-                        return;
-                    default:
-                        System.out.println("Invalid option. Please choose a valid option");
-                        inputMismatch = true;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Error: Invalid input. Please enter a valid number.");
-                inputMismatch = true;
-                scanner.nextLine();
-            }
-        } while (inputMismatch);
-    }
-
-
-
-    public void simulateAllMatches() {
-        System.out.println("Simulating all matches..");
-
-        for (Match match : matchManager.getMatches()) {
-            simulateMatchScore(match);
-        }
-    }
-    private void simulateMatchScore(Match match) {
-
-        Random random = new Random();
-        int homeTeamScore = random.nextInt(6);
-        int awayTeamScore = random.nextInt(6);
-        match.setSimulated(true);
-
-        match.setHomeTeamScore(homeTeamScore);
-        match.setAwayTeamScore(awayTeamScore);
-
-
-       updateTeamStats(match);
-
-
-        System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
-                awayTeamScore + " " + match.getAwayTeam().getName());
-    }
-
-    private void updateTeamStats(Match match) {
-        int homeTeamScore = match.getHomeTeamScore();
-        int awayTeamScore = match.getAwayTeamScore();
-
-        Team homeTeam = match.getHomeTeam();
-        Team awayTeam = match.getAwayTeam();
-
-        homeTeam.setTotalGoalsScored(homeTeam.getTotalGoalsScored() + homeTeamScore);
-        homeTeam.setTotalGoalsReceived(homeTeam.getTotalGoalsReceived() + awayTeamScore);
-
-        awayTeam.setTotalGoalsScored(awayTeam.getTotalGoalsScored() + awayTeamScore);
-        awayTeam.setTotalGoalsReceived(awayTeam.getTotalGoalsReceived() + homeTeamScore);
-
-        if (homeTeamScore > awayTeamScore) {
-            homeTeam.setNumberOfPoints(homeTeam.getNumberOfPoints() + 3);
-        } else if (homeTeamScore < awayTeamScore) {
-            awayTeam.setNumberOfPoints(awayTeam.getNumberOfPoints() + 3);
-
-        } else {
-            homeTeam.setNumberOfPoints(homeTeam.getNumberOfPoints() + 1);
-            awayTeam.setNumberOfPoints(awayTeam.getNumberOfPoints() + 1);
-
-        }
-    }
 
 
 
