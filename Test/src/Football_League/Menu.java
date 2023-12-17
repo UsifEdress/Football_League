@@ -170,6 +170,7 @@ public class Menu implements Serializable {
 
         int positionNumber;
         do {
+            //
             try {
                 System.out.println("Choose a position for the player:");
                 displayPossiblePositions();

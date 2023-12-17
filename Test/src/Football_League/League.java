@@ -56,7 +56,7 @@ public class League implements Serializable {
             position++;
         }
     }
-
+    //
     public void viewTeams() {
         System.out.println("Teams in the League:");
         int counter = 1;
