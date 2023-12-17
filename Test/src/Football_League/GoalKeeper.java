@@ -1,6 +1,8 @@
 package Football_League;
 
-public class GoalKeeper extends Player{
+import java.io.Serializable;
+
+public class GoalKeeper extends Player implements Serializable {
     public GoalKeeper() {
         super();
         this.player_position = position.Goalkeeper;

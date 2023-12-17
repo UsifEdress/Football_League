@@ -1,6 +1,8 @@
 package Football_League;
 
-public class Forward extends Player{
+import java.io.Serializable;
+
+public class Forward extends Player implements Serializable {
     public Forward() {
        super();
         this.player_position = position.forward;
