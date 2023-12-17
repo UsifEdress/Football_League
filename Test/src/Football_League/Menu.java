@@ -1,7 +1,10 @@
 package Football_League;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.time.LocalDate;
 
 public class Menu {
     private League league;
@@ -208,7 +211,6 @@ public class Menu {
         }
 
 
-
         player.setTeam(team.getName());
 
 
@@ -228,6 +230,7 @@ public class Menu {
         }
         return false;
     }
+
     public boolean isKitNumberDuplicate(int jerseyNumber, Team team) {
         for (Player existingPlayer : team.getPlayers()) {
             if (existingPlayer.getNumber() == jerseyNumber) {
@@ -441,6 +444,43 @@ public class Menu {
         }
     }
 
+    private void displayPlayerInfo() {
+        do {
+            if (league.teams.isEmpty() || league.teams.stream().allMatch(team -> team.getPlayers().isEmpty())) {
+                System.out.println("There are no players to display !");
+                break;
+            }
+            System.out.println("Please enter the team of the player you want to display (type 0 to back)");
+            league.viewTeams();
+            int x;
+            while (true) {
+
+                x = scanner.nextInt();
+
+                if (x == 0) {
+                    return;
+                } else if (x > 0 && x <= league.teams.size()) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a valid team number.");
+                }
+            }
+            Team t = league.teams.get(x - 1);
+            System.out.println("Please enter the number of the player you want to display");
+            t.displayTeamPlayersWithID();
+            int y = scanner.nextInt();
+            Player p = t.players.get(y - 1);
+            p.displayPlayerInformation();
+
+            System.out.println("Do you want to display another player? (y/n)");
+            char decide = scanner.next().charAt(0);
+
+            if (decide != 'y') {
+                break;
+            }
+        } while (true);
+    }
+
 
     private void handleTeamsMenu() throws IOException, ClassNotFoundException {
         int choice;
@@ -470,20 +510,37 @@ public class Menu {
                     createTeam();
                     break;
                 case 2:
+                    if (league.teams.isEmpty()) {
+                        System.out.println("There are no Teams !");
+                        break;
+                    }
                     editTeam();
                     break;
                 case 3:
+
                     league.viewTeams();
                     System.out.println("Total teams : " + Team.calculateTotalTeams());
                     break;
                 case 4:
+                    if (league.teams.isEmpty()) {
+                        System.out.println("There are no Teams !");
+                        break;
+                    }
                     displayTeamMatches();
                     break;
 
                 case 5:
+                    if (league.teams.isEmpty()) {
+                        System.out.println("There are no Teams !");
+                        break;
+                    }
                     displayTeamInfo();
                     break;
                 case 6:
+                    if (league.teams.isEmpty()) {
+                        System.out.println("There are no Teams !");
+                        break;
+                    }
                     deleteTeam();
                     break;
                 case 7:
@@ -553,10 +610,10 @@ public class Menu {
                 if (!validateName(stadium)) {
                     System.out.println("Invalid input for team stadium. Make sure it is a non-empty string without numbers or other symbols.");
                 }
-                if (isStadiumNameDuplicate(stadium)){
+                if (isStadiumNameDuplicate(stadium)) {
                     System.out.println("Team with Stadium " + stadium + " already exists. Please choose a unique Stadium.");
                 }
-                if (validateName(stadium) &&!isStadiumNameDuplicate(stadium))
+                if (validateName(stadium) && !isStadiumNameDuplicate(stadium))
                     break;
 
             } catch (InputMismatchException e) {
@@ -710,6 +767,10 @@ public class Menu {
                 System.out.print("Do you want to update the team captain? (y/n): ");
                 String updateTeamCaptain = scanner.next().toLowerCase();
                 if ("y".equals(updateTeamCaptain)) {
+                    if (team.getPlayers().isEmpty()) {
+                        System.out.println("There are no Players in the Team !");
+                        break;
+                    }
                     team.displayTeamPlayers();
                     team.updateTeamCaptain(scanner);
                     break;
@@ -746,62 +807,66 @@ public class Menu {
         return false;
     }
 
-
-
-    private void handleMatchesMenu() {
-        int choice;
+    public void displayTeamMatches() {
+        String displayAnotherTeam;
         do {
-            System.out.println("Matches Menu:");
-            System.out.println("1. View Matches");
-            System.out.println("2. Edit Match");
-            System.out.println("3. Back");
-            System.out.print("Enter your choice: ");
+            System.out.println("Select a team to view matches:");
+            System.out.println();
+            league.viewTeams();
 
-            try {
-                choice = scanner.nextInt();
-                scanner.nextLine();
+            System.out.print("Enter the number of the team: ");
+            System.out.println();
+            int teamNumber;
+            while (true) {
+                try {
+                    teamNumber = scanner.nextInt();
+                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                    scanner.next();
+                }
+            }
 
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter a valid integer.");
-                scanner.nextLine();
-                choice = -1;
+            if (teamNumber >= 1 && teamNumber <= league.teams.size()) {
+                Team selectedTeam = league.teams.get(teamNumber - 1);
+                System.out.println("Matches for Team \"" + selectedTeam.getName() + "\" :");
 
+                boolean teamFound = false;
+
+                for (Match match : matchManager.getMatches()) {
+                    if (match.getHomeTeam().equals(selectedTeam) || match.getAwayTeam().equals(selectedTeam)) {
+                        teamFound = true;
+
+                        String homeAwayIndication = match.getHomeTeam().equals(selectedTeam) ? "(Home)" : "(Away)";
+                        System.out.println(match + " " + homeAwayIndication);
+                    }
+                }
+
+                if (!teamFound) {
+                    System.out.println("No matches found for Team: " + selectedTeam.getName());
+                }
+            } else {
+                System.out.println("Invalid team selection.");
             }
 
             System.out.println();
-
-            switch (choice) {
-                case 1:
-
-                    displayTeamMatches();
-
-                    break;
-                case 2:
-
-                    System.out.println("Editing Match...");
-                    break;
-                case 3:
-                    System.out.println("Returning to main menu.");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+            while (true) {
+                System.out.print("Do you want to display matches for another team? (y/n): ");
+                try {
+                    displayAnotherTeam = scanner.next();
+                    if (displayAnotherTeam.equalsIgnoreCase("y") || displayAnotherTeam.equalsIgnoreCase("n")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    scanner.next();
+                }
             }
-        } while (choice != 3);
+
+        } while (!displayAnotherTeam.equalsIgnoreCase("n"));
     }
-
-
-    private void editMatch() {
-        // Implement match editing logic
-        // You can call methods on the league object to perform the necessary actions
-        // For example: league.editMatch();
-        System.out.println("Editing Match...");
-    }
-
-    private boolean validateName(String name) {
-
-        return !name.trim().isEmpty() && name.matches("[a-zA-Z ]+");
-    }
-
 
     public void teamPlayers() {
         System.out.println("View Team's Players");
@@ -853,77 +918,6 @@ public class Menu {
                 }
             }
         }
-    }
-
-    public void displayTeamMatches() {
-        System.out.println("Select a team to view matches:");
-
-        league.viewTeams();
-
-        System.out.print("Enter the number of the team: ");
-        System.out.println();
-        int teamNumber = scanner.nextInt();
-
-        if (teamNumber >= 1 && teamNumber <= league.teams.size()) {
-            Team selectedTeam = league.teams.get(teamNumber - 1);
-            System.out.println("Matches for Team: " + selectedTeam.getName());
-
-            boolean teamFound = false;
-
-            for (Match match : matchManager.getMatches()) {
-                if (match.getHomeTeam().equals(selectedTeam) || match.getAwayTeam().equals(selectedTeam)) {
-
-                    teamFound = true;
-
-
-                    String homeAwayIndication = match.getHomeTeam().equals(selectedTeam) ? "(Home)" : "(Away)";
-                    System.out.println(match + " " + homeAwayIndication);
-                }
-            }
-
-            if (!teamFound) {
-                System.out.println("No matches found for Team: " + selectedTeam.getName());
-            }
-        } else {
-            System.out.println("Invalid team selection.");
-        }
-    }
-
-    private void displayPlayerInfo() {
-        do {
-            if (league.teams.isEmpty() || league.teams.stream().allMatch(team -> team.getPlayers().isEmpty())) {
-                System.out.println("There are no players to display !");
-                break;
-            }
-            System.out.println("Please enter the team of the player you want to display (type 0 to back)");
-            league.viewTeams();
-            int x;
-            while (true) {
-
-                x = scanner.nextInt();
-
-                if (x == 0) {
-                    return;
-                } else if (x > 0 && x <= league.teams.size()) {
-                    break;
-                } else {
-                    System.out.println("Invalid input. Please enter a valid team number.");
-                }
-            }
-            Team t = league.teams.get(x - 1);
-            System.out.println("Please enter the number of the player you want to display");
-            t.displayTeamPlayersWithID();
-            int y = scanner.nextInt();
-            Player p = t.players.get(y - 1);
-            p.displayPlayerInformation();
-
-            System.out.println("Do you want to display another player? (y/n)");
-            char decide = scanner.next().charAt(0);
-
-            if (decide != 'y') {
-                break;
-            }
-        } while (true);
     }
 
     private void displayTeamInfo() {
@@ -1013,6 +1007,352 @@ public class Menu {
             }
         }
     }
+
+    private void handleMatchesMenu() {
+        int choice;
+        do {
+            System.out.println("Matches Menu:");
+            System.out.println("1. Create Match");
+            System.out.println("2. Edit Match");
+            System.out.println("3. Display all Matches");
+            System.out.println("4. Delete a Match");
+            System.out.println("5. Back");
+            System.out.print("Enter your choice: ");
+
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine();
+                choice = -1;
+
+            }
+
+            System.out.println();
+
+            switch (choice) {
+                case 1:
+
+                    createMatch();
+                    break;
+                case 2:
+
+                    editMatch();
+                    break;
+                case 3:
+                    displayMatches();
+                    break;
+                case 4:
+                    deleteMatch();
+                    break;
+                case 5:
+                    System.out.println("Returning to main menu.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 4);
+    }
+
+    private void createMatch() {
+        boolean inputMismatch;
+        do {
+            inputMismatch = false;
+            try {
+                System.out.println("Please enter the number for team 1: (Or 0 to back)");
+                league.viewTeams();
+                int x = scanner.nextInt();
+                scanner.nextLine();
+                if (x== 0)
+                    break;
+
+                if (x < 1 || x > league.teams.size()) {
+                    System.out.println("Error: Invalid team number. Please enter a valid team number.");
+                    inputMismatch = true;
+                    continue;
+                }
+
+                Team t1 = league.teams.get(x - 1);
+
+                Team t2;
+                while (true) {
+                    System.out.println("Please enter the number for team 2:");
+
+                    int index = 1;
+
+                    for (Team team : league.teams) {
+                        if (!team.equals(t1)) {
+                            System.out.println(index + ". " + team.getName());
+                            index++;
+                        } else {
+                            System.out.println(index + ". " + team.getName() + "(already picked)");
+                            index++;
+                        }
+                    }
+
+                    int teamNum = scanner.nextInt();
+                    if (teamNum < 1 || teamNum > league.teams.size() || t1 == league.teams.get(teamNum - 1)) {
+                        System.out.println("Cannot make a match between the same Team !");
+                    } else {
+                        t2 = league.teams.get(teamNum - 1);
+                        break;
+                    }
+                }
+
+                String stadium = t1.getStadium();
+                String randomReferee = matchManager.generateRandomReferee();
+
+                LocalDate currentDate = LocalDate.now();
+
+                LocalDate matchDate;
+                do {
+
+                    scanner.nextLine();
+
+                    System.out.print("Enter the date for the match (YYYY-MM-DD): ");
+                    String inputDate = scanner.nextLine();
+
+                    try {
+                        matchDate = LocalDate.parse(inputDate, DateTimeFormatter.ISO_LOCAL_DATE);
+                        if (matchDate.isBefore(currentDate)) {
+                            System.out.println("Error: The selected date is in the past. Please choose a future date.");
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error: Invalid date format. Please enter the date in the specified format (YYYY-MM-DD).");
+                        matchDate = null;
+                    }
+                } while (matchDate == null || matchDate.isBefore(currentDate));
+
+
+                Match newMatch = new Match(t1, t2, stadium, randomReferee, MatchManager.getMatchIdCounter(), matchDate);
+                int newID = MatchManager.getMatchIdCounter() + 1;
+                MatchManager.setMatchIdCounter(newID);
+                System.out.println("Match created!");
+
+                matchManager.matches.add(newMatch);
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Invalid input. Please enter a valid number.");
+                inputMismatch = true;
+            }
+        } while (inputMismatch);
+    }
+    public void editMatch() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println();
+        System.out.println("Please enter the index of the match you want to edit: ");
+        matchManager.displayAllMatches();
+        int matchIndex;
+        while (true) {
+            try {
+                System.out.println("Enter your choice (or 0 to back): ");
+                matchIndex = scanner.nextInt();
+                if (matchIndex == 0) {
+                    return;
+                } else if (matchIndex > 0 && matchIndex <= matchManager.matches.size()) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a valid match index.");
+                }
+
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+
+                scanner.nextLine();
+            }
+        }
+        Match match = matchManager.matches.get(matchIndex - 1);
+        updateMatch(match);
+    }
+    public void updateMatch(Match match) {
+        Scanner scanner = new Scanner(System.in);
+        String choice;
+
+        while (true) {
+            System.out.print("Do you want to update the date? (y/n): ");
+            choice = scanner.nextLine().trim().toLowerCase();
+
+            if ("y".equals(choice)) {
+                while (true) {
+                    System.out.print("Please enter the new date (YYYY-MM-DD): ");
+                    String inputDate = scanner.nextLine();
+
+                    try {
+                        LocalDate newDate = LocalDate.parse(inputDate, DateTimeFormatter.ISO_LOCAL_DATE);
+                        if (newDate.isBefore(LocalDate.now())) {
+                            System.out.println("Error: The selected date is in the past. Please choose an upcoming date.");
+                        } else {
+                            match.setMatchDate(newDate);
+                            System.out.println("Date updated successfully.");
+                            break;
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Error: Invalid date format. Please enter the date in the specified format.");
+                    }
+                }
+                break;
+            } else if ("n".equals(choice)) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+        }
+
+        while (true) {
+            System.out.print("Do you want to update the teams? (y/n): ");
+            choice = scanner.nextLine();
+
+            if ("y".equalsIgnoreCase(choice)) {
+                System.out.println("Please enter the number of the team you want to assign the match to");
+
+                break;
+            } else if ("n".equalsIgnoreCase(choice)) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+        }
+
+        while (true) {
+            System.out.print("Do you want to update the referee? (y/n): ");
+            choice = scanner.nextLine();
+            if ("y".equalsIgnoreCase(choice)) {
+                System.out.print("Please enter the new referee's name: ");
+                try {
+                    String newReferee = scanner.nextLine();
+                    if (validateName(newReferee)) {
+                        match.setReferee(newReferee);
+                        System.out.println("Referee updated successfully.");
+                        break;
+                    } else {
+                        System.out.println("Invalid name. Please enter a valid name for the referee.");
+                    }
+                } catch (java.util.NoSuchElementException e) {
+                    System.out.println("Invalid input. Please enter a valid name.");
+                    scanner.nextLine();
+                }
+            } else if ("n".equalsIgnoreCase(choice)) {
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+        }
+
+        while (true) {
+            System.out.print("Do you want to update the stadium? (y/n): ");
+            choice = scanner.nextLine();
+            if ("y".equalsIgnoreCase(choice)) {
+                System.out.print("Please enter the new stadium name: ");
+                String newStadium = scanner.nextLine();
+                if (validateName(newStadium)) {
+                    if (checkStadiumAvailability(newStadium, match.getMatchDate())) {
+                        match.setStadium(newStadium);
+                        System.out.println("Stadium updated successfully.");
+                        break;
+                    }
+                } else {
+                    System.out.println("Invalid name. Please enter a valid name for the stadium:");
+                }
+            } else if ("n".equalsIgnoreCase(choice)) {
+
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+        }
+
+        System.out.println("Match information updated successfully!");
+    }
+
+    private void displayMatches(){
+        matchManager.displayAllMatches();
+    }
+
+    private boolean checkStadiumAvailability(String stadiumName, LocalDate matchDate) {
+
+        while (!stadiumExists(stadiumName, league.teams)) {
+            System.out.println("Error: Stadium with the provided name does not exist.");
+            System.out.print("Please enter a valid stadium name: ");
+            stadiumName = scanner.nextLine();
+        }
+
+        for (Match existingMatch : matchManager.matches) {
+            if (existingMatch.getMatchDate().equals(matchDate) && existingMatch.getStadium().equalsIgnoreCase(stadiumName)) {
+                System.out.println("Error: Another match is already scheduled in the same stadium on the selected date.");
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+    private boolean stadiumExists(String stadiumName, List<Team> teams) {
+        for (Team team : teams) {
+            if (team.getStadium().equalsIgnoreCase(stadiumName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void deleteMatch() {
+        int matchIndex;
+        while (true) {
+            try {
+                System.out.print("Enter the number of the match you want to delete (0 to back): ");
+                matchManager.displayAllMatches();
+                System.out.println("Enter your choice :");
+
+                matchIndex = scanner.nextInt();
+
+                if (matchIndex == 0) {
+                    System.out.println("Deletion canceled.");
+                    return;
+                } else if (matchIndex > 0 && matchIndex <= matchManager.matches.size()) {
+                    break;
+                } else {
+                    System.out.println("Invalid input. Please enter a valid match number.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.nextLine();
+            }
+        }
+
+        Match matchToDelete = matchManager.matches.get(matchIndex - 1);
+        matchManager.displayMatchDetails(matchToDelete);
+        scanner.nextLine();
+
+        while (true) {
+            System.out.print("Are you sure you want to delete this match? (y/n): ");
+            String confirmation = scanner.nextLine().trim().toLowerCase();
+
+            if ("y".equals(confirmation)) {
+                matchManager.matches.remove(matchToDelete);
+                System.out.println("Deletion successful.");
+                break;
+            } else if ("n".equals(confirmation)) {
+                System.out.println("Deletion canceled.");
+                break;
+            } else {
+                System.out.println("Invalid input. Please enter 'y' for yes or 'n' for no.");
+            }
+        }
+    }
+
+
+
+
+
+
+    private boolean validateName(String name) {
+        return !name.trim().isEmpty() && name.matches("[a-zA-Z\\s-]+");
+    }
+
+
+
+
 
 
 }

@@ -1,18 +1,32 @@
 package Football_League;
+
+import java.time.LocalDate;
+import java.util.*;
+
 // do not forget to make an interface for this class
 public class Match {
+    private static int nextId = 1;
 
+
+
+    private LocalDate matchDate;
+
+    private final int matchId;
     private Team homeTeam;
     private Team awayTeam;
     private String stadium;
     private String referee;
-    public Match(Team home_Team, Team away_Team , String Stadium, String referee) {
-        homeTeam = home_Team;
-        awayTeam = away_Team;
-        this.stadium = Stadium;
+    public Match(Team homeTeam, Team awayTeam, String stadium, String referee, int matchId,LocalDate matchDate) {
+        this.matchId = nextId++;
+        this.homeTeam = homeTeam;
+        this.awayTeam = awayTeam;
+        this.stadium = stadium;
         this.referee = referee;
-
+        this.matchDate = matchDate;
     }
+
+
+
     public String toString() {
         return homeTeam.getName() + " vs " + awayTeam.getName() +
                 " at " + stadium + " with referee " + referee;
@@ -33,6 +47,12 @@ public class Match {
     public String getReferee() {
         return referee;
     }
+    public int getMatchId() {
+        return matchId;
+    }
+    public LocalDate getMatchDate() {
+        return matchDate;
+    }
     //setters
     public void setHomeTeam(Team homeTeam) {
         this.homeTeam = homeTeam;
@@ -48,6 +68,9 @@ public class Match {
 
     public void setReferee(String referee) {
         this.referee = referee;
+    }
+    public void setMatchDate(LocalDate matchDate) {
+        this.matchDate = matchDate;
     }
 
     void Match_Simulation(Team t1 , Team t2){
@@ -86,5 +109,7 @@ public class Match {
         }
 
     }
+
+
 
 }
