@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 public class Menu implements Serializable {
     private League league;
-    private transient Scanner scanner;
+    private final transient Scanner scanner;
 
     private MatchManager matchManager;
 
@@ -1039,6 +1039,7 @@ public class Menu implements Serializable {
     private void handleMatchesMenu() {
         int choice;
         do {
+            System.out.println();
             System.out.println("Matches Menu:");
             System.out.println("1. Create Match");
             System.out.println("2. Edit Match");
@@ -1357,9 +1358,9 @@ public class Menu implements Serializable {
                                 match.getAwayTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() + 3);
                             }
                             match.getHomeTeam().setTotalGoalsScored(match.getHomeTeam().getTotalGoalsScored() + newHomeScore);
-                            match.getAwayTeam().setTotalGoalsScored(match.getAwayTeam().getTotalGoalsScored() - newAwayScore);
-                            match.getHomeTeam().setTotalGoalsReceived(match.getHomeTeam().getTotalGoalsReceived() - newAwayScore);
-                            match.getAwayTeam().setTotalGoalsReceived(match.getAwayTeam().getTotalGoalsReceived() - newHomeScore);
+                            match.getAwayTeam().setTotalGoalsScored(match.getAwayTeam().getTotalGoalsScored() + newAwayScore);
+                            match.getHomeTeam().setTotalGoalsReceived(match.getHomeTeam().getTotalGoalsReceived() + newAwayScore);
+                            match.getAwayTeam().setTotalGoalsReceived(match.getAwayTeam().getTotalGoalsReceived() + newHomeScore);
 
                             match.setHomeTeamScore(newHomeScore);
                             match.setAwayTeamScore(newAwayScore);
@@ -1373,6 +1374,7 @@ public class Menu implements Serializable {
                         }
                         break;
                     }
+                    break;
                 } else if ("n".equals(choice)) {
                     break;
                 } else {
@@ -1667,6 +1669,7 @@ public class Menu implements Serializable {
         int choice = 0;
         do {
             try {
+                System.out.println();
                 System.out.println("League Table Menu:");
                 System.out.println("1. Display League Standings");
                 System.out.println("2. Display Average Age Standings");
@@ -1761,7 +1764,7 @@ public class Menu implements Serializable {
         List<Player> topGoalScorers = league.sortPlayersGoals();
 
         System.out.println("Top 5 Goal Scorers:");
-        System.out.printf("%-20s%-10s%-10s%n", "Player", "Team", "Goals Scored");
+        System.out.printf("%-20s%-10s%-10s%n", "Player", "Team", "Goals");
 
         int count = 0;
         for (Player player : topGoalScorers) {

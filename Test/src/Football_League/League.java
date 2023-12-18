@@ -10,7 +10,7 @@ import java.util.*;
 public class League implements Serializable {
     public List<Team> teams;
 
-    private transient Scanner scanner = new Scanner(System.in);
+    private final transient Scanner scanner = new Scanner(System.in);
     private MatchManager matchManager;
 
     public League() {
@@ -120,18 +120,36 @@ public class League implements Serializable {
             System.out.println("Are you sure you want to reset the league? (y/n)");
 
             try {
-                String userInput = scanner.nextLine();
-
-                if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
-                    resetTeams();
-                    resetPlayers();
-                    System.out.println("League reset successfully.");
-                    return true;
-                } else if (Objects.equals(userInput, "n") || Objects.equals(userInput, "N")) {
-                    System.out.println("League reset canceled.");
-                    return false;
-                } else {
-                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                if(scanner!=null)
+                {
+                    String userInput = scanner.nextLine();
+                    if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
+                        resetTeams();
+                        resetPlayers();
+                        System.out.println("League reset successfully.");
+                        return true;
+                    } else if (Objects.equals(userInput, "n") || Objects.equals(userInput, "N")) {
+                        System.out.println("League reset canceled.");
+                        return false;
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    }
+                }
+                else
+                {
+                    Scanner test = new Scanner(System.in);
+                    String userInput = test.nextLine();
+                    if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
+                        resetTeams();
+                        resetPlayers();
+                        System.out.println("League reset successfully.");
+                        return true;
+                    } else if (Objects.equals(userInput, "n") || Objects.equals(userInput, "N")) {
+                        System.out.println("League reset canceled.");
+                        return false;
+                    } else {
+                        System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                    }
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter 'y' or 'n'.");
