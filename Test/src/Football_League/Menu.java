@@ -1602,24 +1602,30 @@ public class Menu implements Serializable {
     }
 
     private void simulateMatchScore(Match match) {
-        match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed() + 1);
-        match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed() + 1);
-        Random random = new Random();
-        int homeTeamScore = random.nextInt(6);
-        int awayTeamScore = random.nextInt(6);
-        match.setSimulated(true);
-        distributeGoals(match.getHomeTeam(), homeTeamScore);
-        distributeGoals(match.getAwayTeam(), awayTeamScore);
+        if(match.getHomeTeam().players.size()<11 || match.getAwayTeam().players.size()<11 )
+        {
+            System.out.println("Each Team should have at least 11 Players to simulate!");
+        }
+        else {
+            match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed() + 1);
+            match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed() + 1);
+            Random random = new Random();
+            int homeTeamScore = random.nextInt(6);
+            int awayTeamScore = random.nextInt(6);
+            match.setSimulated(true);
+            distributeGoals(match.getHomeTeam(), homeTeamScore);
+            distributeGoals(match.getAwayTeam(), awayTeamScore);
 
-        match.setHomeTeamScore(homeTeamScore);
-        match.setAwayTeamScore(awayTeamScore);
+            match.setHomeTeamScore(homeTeamScore);
+            match.setAwayTeamScore(awayTeamScore);
 
 
-        updateTeamStats(match);
+            updateTeamStats(match);
 
 
-        System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
-                awayTeamScore + " " + match.getAwayTeam().getName());
+            System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
+                    awayTeamScore + " " + match.getAwayTeam().getName());
+        }
     }
     private void distributeGoals(Team team, int goals) {
         List<Player> players = team.getPlayers();

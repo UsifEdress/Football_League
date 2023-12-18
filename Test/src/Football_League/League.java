@@ -154,7 +154,6 @@ public class League implements Serializable {
         }
         System.out.println("Player not found.");
     }
-
     public void searchPlayerByNameAndTeam(String playerName, String teamName) {
         for (Team team : teams) {
             if (team.getName().equalsIgnoreCase(teamName)) {
@@ -171,5 +170,4 @@ public class League implements Serializable {
         }
         System.out.println("Team not found.");
     }
-
 }
