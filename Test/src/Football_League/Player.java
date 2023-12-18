@@ -9,10 +9,8 @@ public abstract class Player implements Player_Interface, Serializable {
     private int Player_ID;
     private int Player_Number;
     private int Player_Age;
-    private int Player_Score;
+    private int Player_Score=0;
     private float Player_Rank;
-
-    private int goalScored = 0;
 
     public enum position {Goalkeeper, defender, midfielder, forward}
 
@@ -24,12 +22,11 @@ public abstract class Player implements Player_Interface, Serializable {
     public Player() {
     }
 
-    public Player(String name, int player_ID, int player_Number, int player_Age, int player_Score, int player_Rank, String team) {
+    public Player(String name, int player_ID, int player_Number, int player_Age, int player_Rank, String team) {
         this.Player_Name = name;
         Player_ID = player_ID;
         Player_Number = player_Number;
         Player_Age = player_Age;
-        Player_Score = player_Score;
         Player_Rank = player_Rank;
         this.team = team;
     }
@@ -92,19 +89,19 @@ public abstract class Player implements Player_Interface, Serializable {
                 scanner.nextLine();
             }
         }
-        while (true) {
-            try {
-                System.out.print("Enter player Score: ");
-                int enteredScore = scanner.nextInt();
-                validatescore(enteredScore);
-                this.Player_Score = enteredScore;
-                break;
-            } catch (InputMismatchException | IllegalArgumentException ex) {
-                System.out.println("Invalid input for player score. " + ex.getMessage());
-            } finally {
-                scanner.nextLine();
-            }
-        }
+//        while (true) {
+//            try {
+//                System.out.print("Enter player Score: ");
+//                int enteredScore = scanner.nextInt();
+//                validatescore(enteredScore);
+//                this.Player_Score = enteredScore;
+//                break;
+//            } catch (InputMismatchException | IllegalArgumentException ex) {
+//                System.out.println("Invalid input for player score. " + ex.getMessage());
+//            } finally {
+//                scanner.nextLine();
+//            }
+//        }
         while (true) {
             try {
                 System.out.print("Enter player rank: ");
@@ -227,12 +224,6 @@ public abstract class Player implements Player_Interface, Serializable {
         }
 
         //////////////////////////////////////////////
-        System.out.print("Enter new player score (press 0.0 to keep the current score): ");
-        double newScore = scanner.nextDouble();
-        if (newScore != 0.0) {
-            this.Player_Score = (int) newScore;
-        }
-        ////////////////////////////////////////////
         System.out.print("Enter new player rank (press 0 to keep the current rank): ");
         int newRank = scanner.nextInt();
         if (newRank != 0) {
@@ -272,16 +263,9 @@ public abstract class Player implements Player_Interface, Serializable {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void validatescore(int score) {
-        if (score < 0 || score > 99) {
-            throw new IllegalArgumentException("Player Score must be between 0 and 99.");
-        }
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     private void validaterank(float rank) {
-        if (rank < 1 || rank > 10) {
-            throw new IllegalArgumentException("Player rank must be between 1 and 10.");
+        if (rank < 1 || rank > 99) {
+            throw new IllegalArgumentException("Player rank must be between 1 and 99.");
         }
     }
 
@@ -352,7 +336,7 @@ public abstract class Player implements Player_Interface, Serializable {
     }
 
     public void setGoalScored(int goalScored) {
-        this.goalScored = goalScored;
+        this.Player_Score = goalScored;
     }
 
     public void resetStats() {

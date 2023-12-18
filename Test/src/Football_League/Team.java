@@ -12,14 +12,12 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
     private List<Match> matches;
 
     private String stadium;
-    private int goalsScored = 0;
     private int totalGoalsScored = 0;
     private int totalGoalsReceived = 0;
     private int numberOfWins = 0;
     private int numberOfPoints = 0;
     private int numberOfLoses = 0;
     private int numberOfDraws = 0;
-    private int goalsReceived = 0;
 
 
 
@@ -87,10 +85,6 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
         return captain;
     }
 
-    public int getGoalsScored() {
-        return goalsScored;
-    }
-
     public int getTotalGoalsScored() {
         return totalGoalsScored;
     }
@@ -99,25 +93,11 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
         return totalGoalsReceived;
     }
 
-    public int getNumberOfWins() {
-        return numberOfWins;
-    }
 
     public int getNumberOfPoints() {
         return numberOfPoints;
     }
 
-    public int getNumberOfLoses() {
-        return numberOfLoses;
-    }
-
-    public int getNumberOfDraws() {
-        return numberOfDraws;
-    }
-
-    public int getGoalsReceived() {
-        return goalsReceived;
-    }
     public int getMatchesPlayed() {
         return matchesPlayed;
     }
@@ -126,18 +106,11 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
         return getTotalGoalsScored() - getTotalGoalsReceived();
     }
 
-//    public double getAverageAge() {
-//        return averageAge;
-//    }
 
     public String getStadium() {
         return stadium;
     }
     // Setters
-
-    public void setGoalsScored(int goalsScored) {
-        this.goalsScored = goalsScored;
-    }
 
     public void setTotalGoalsScored(int totalGoalsScored) {
         this.totalGoalsScored = totalGoalsScored;
@@ -147,24 +120,8 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
         this.totalGoalsReceived = totalGoalsReceived;
     }
 
-    public void setNumberOfWins() {
-        this.numberOfWins++;
-    }
-
     public void setNumberOfPoints(int numberOfPoints) {
         this.numberOfPoints = numberOfPoints;
-    }
-
-    public void setNumberOfLoses() {
-        this.numberOfLoses++;
-    }
-
-    public void setNumberOfDraws() {
-        this.numberOfDraws++;
-    }
-
-    public void setGoalsReceived(int goalsReceived) {
-        this.goalsReceived = goalsReceived;
     }
 
     public void setStadium(String stadium) {
@@ -212,152 +169,6 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
         }
     }
 
-
-    @Override
-    public void enterTeamInformation() {
-
-
-        System.out.println("Enter Team Information:");
-
-        System.out.print("Team Name: ");
-        teamName = scanner.nextLine();
-
-        System.out.print("Team ID: ");
-        teamId = scanner.nextInt();
-        scanner.nextLine();
-
-
-        System.out.print("Enter the number of players to add: ");
-        int numberOfPlayers = scanner.nextInt();
-
-        for (int i = 0; i < numberOfPlayers; i++) {
-            int positionNumber;
-            do {
-
-                System.out.println("Choose a position:");
-                System.out.println("1. Forward");
-                System.out.println("2. Midfielder");
-                System.out.println("3. Defender");
-                System.out.println("4. Goalkeeper");
-
-
-                System.out.println("Enter position for Player " + (i + 1) + ":");
-                positionNumber = scanner.nextInt();
-                scanner.nextLine();
-
-
-            } while (positionNumber < 1 || positionNumber > 4);
-            switch (positionNumber) {
-                case 1:
-                    Player player = new Forward();
-                    System.out.println("Enter information for Player " + (i + 1) + ":");
-
-                    System.out.print("Name: ");
-                    player.setName(scanner.next());
-
-                    System.out.print("Number: ");
-                    player.setNumber(scanner.nextInt());
-
-                    System.out.print("ID: ");
-                    player.setPlayerID(scanner.nextInt());
-
-                    System.out.print("Rank: ");
-                    player.setRank(scanner.nextInt());
-
-
-                    addPlayerToTeam(player);
-                    break;
-                case 2:
-                    Player Mid = new Midfielder();
-                    System.out.println("Enter information for Player " + (i + 1) + ":");
-
-                    System.out.print("Name: ");
-                    Mid.setName(scanner.next());
-
-                    System.out.print("Number: ");
-                    Mid.setNumber(scanner.nextInt());
-
-                    System.out.print("ID: ");
-                    Mid.setPlayerID(scanner.nextInt());
-
-                    System.out.print("Rank: ");
-                    Mid.setRank(scanner.nextInt());
-
-
-                    addPlayerToTeam(Mid);
-                    break;
-                case 3:
-                    Player def = new Defender();
-                    System.out.println("Enter information for Player " + (i + 1) + ":");
-
-                    System.out.print("Name: ");
-                    def.setName(scanner.next());
-
-                    System.out.print("Number: ");
-                    def.setNumber(scanner.nextInt());
-
-                    System.out.print("ID: ");
-                    def.setPlayerID(scanner.nextInt());
-
-                    System.out.print("Rank: ");
-                    def.setRank(scanner.nextInt());
-
-
-                    addPlayerToTeam(def);
-                    break;
-                case 4:
-                    Player goalie = new GoalKeeper();
-                    System.out.println("Enter information for Player " + (i + 1) + ":");
-
-                    System.out.print("Name: ");
-                    goalie.setName(scanner.next());
-
-                    System.out.print("Number: ");
-                    goalie.setNumber(scanner.nextInt());
-
-                    System.out.print("ID: ");
-                    goalie.setPlayerID(scanner.nextInt());
-
-                    System.out.print("Rank: ");
-                    goalie.setRank(scanner.nextInt());
-
-
-                    addPlayerToTeam(goalie);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Invalid position number.");
-
-
-            }
-        }
-        System.out.println("Team information entered successfully!");
-    }
-
-
-    @Override
-    public void updateTeam() {
-
-        System.out.println("Update Team Information:");
-
-        System.out.print("Do you want to update the team name? (y/n): ");
-        if (scanner.next().equalsIgnoreCase("y")) {
-            System.out.print("Enter new team name: ");
-            teamName = scanner.next();
-        }
-
-        System.out.print("Do you want to update the team ID? (y/n): ");
-        if (scanner.next().equalsIgnoreCase("y")) {
-            System.out.print("Enter new team ID: ");
-            teamId = scanner.nextInt();
-        }
-
-        System.out.print("Do you want to update the team captain? (y/n): ");
-        if (scanner.next().equalsIgnoreCase("y")) {
-            updateTeamCaptain(scanner);
-        }
-
-        System.out.println("Team information updated successfully!");
-    }
 
 
     @Override
@@ -421,7 +232,6 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
 
         System.out.println("Player " + player.getPlayerName() + " added to team " + teamName + " !");
 
-        // Prompt to make the player the captain
         System.out.print("Do you want to make this player the captain? (y/n): ");
         Scanner scanner = new Scanner(System.in);
         if (scanner.next().equalsIgnoreCase("y")) {
@@ -442,89 +252,12 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
     }
 
     @Override
-    public void deletePlayerFromTeam() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter player name to delete: ");
-        String playerNameToDelete = scanner.nextLine().trim();
-
-        System.out.print("Enter player ID to delete: ");
-        int playerIdToDelete = scanner.nextInt();
-
-        if (players != null) {
-            Iterator<Player> iterator = players.iterator();
-            while (iterator.hasNext()) {
-                Player player = iterator.next();
-                if (player.getPlayerName().equalsIgnoreCase(playerNameToDelete) && player.getID() == playerIdToDelete) {
-                    if (player.equals(captain)) {
-                        System.out.print("This player is the captain. Are you sure you want to delete the captain? (y/n): ");
-                        String confirmation = scanner.next();
-                        if (confirmation.equalsIgnoreCase("n")) {
-                            System.out.println("Deletion canceled. The captain remains unchanged.");
-                            return;
-                        } else if (confirmation.equalsIgnoreCase("y")) {
-                            iterator.remove();
-                            System.out.println("Player " + playerNameToDelete + " (ID: " + playerIdToDelete + ") removed from the team!");
-
-
-                            System.out.print("Enter the name of the new team captain: ");
-                            String newCaptainName = scanner.next();
-
-
-                            for (Player nextCaptain : players) {
-                                if (nextCaptain.getPlayerName().equalsIgnoreCase(newCaptainName)) {
-                                    captain = nextCaptain;
-                                    System.out.println(nextCaptain.getPlayerName() + " is now the captain.");
-                                    return;
-                                }
-                            }
-
-                            System.out.println("Player with name " + newCaptainName + " not found. No change in captain.");
-                        } else {
-                            System.out.println("Invalid input. Deletion canceled. The captain remains unchanged.");
-                            return;
-                        }
-                    }
-
-                    iterator.remove();
-                    System.out.println("Player " + playerNameToDelete + " (ID: " + playerIdToDelete + ") removed from the team!");
-                    return;
-                }
-            }
-        }
-
-        System.out.println("Player " + playerNameToDelete + " (ID: " + playerIdToDelete + ") not found in the team.");
-    }
-
-
-    public static int calculateTotalTeams() {
-        return totalTeams;
-
-
-    }
-
-    @Override
     public int compareTo(Team otherTeam) {
 
         return Integer.compare(otherTeam.getNumberOfPoints(), this.getNumberOfPoints());
     }
 
 
-    public int Goals_assumption() {
-        return ((int) (Math.random() * 6 + 0));
-    }
-
-    //    public double calculateAverageAge()
-//    {
-//        double sumAge=0;
-//        double numberOfPlayers = 0;
-//        for (Player player : players) {
-//            sumAge+=player.getAge();
-//            numberOfPlayers=players.size();
-//        }
-//        sumAge /= numberOfPlayers;
-//        return sumAge;
-//    }
     public void resetStats(){
         this.setTotalGoalsScored(0);
         this.setMatchesPlayed(0);

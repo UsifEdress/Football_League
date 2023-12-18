@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 public class Menu implements Serializable {
     private League league;
-    private Scanner scanner;
+    private transient Scanner scanner;
 
     private MatchManager matchManager;
 
@@ -43,7 +43,6 @@ public class Menu implements Serializable {
     }
 
     public void start() throws IOException, ClassNotFoundException, FileNotFoundException {
-//        league.readTeams(league.readTeamsNames());
         System.out.println("Welcome to football league simulator !");
         int choice;
         do {
@@ -1730,21 +1729,20 @@ public class Menu implements Serializable {
 
 
     public void displayTopCleanSheets() {
-
         league.sortTeamsByLeastGoalsReceived();
         int count = 0;
+
+        System.out.printf("%-20s%-20s%-10s%n", "Team", "Team GK", "GA");
 
         for (Team team : league.teams) {
             GoalKeeper goalkeeper = team.getGK();
 
             if (goalkeeper != null) {
-
-                System.out.printf("%-20s%-10s%-10d%n", team.getTeamName(), goalkeeper.toString(), team.getTotalGoalsReceived());
+                System.out.printf("%-20s%-20s%-10d%n", team.getTeamName(), goalkeeper.toString(), team.getTotalGoalsReceived());
                 count++;
             }
 
             if (count >= 5) {
-
                 break;
             }
         }

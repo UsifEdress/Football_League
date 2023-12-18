@@ -15,7 +15,7 @@ public class GoalKeeper extends Player implements Serializable {
         System.out.println("Position : " + this.player_position);
         System.out.println("Number: " + this.getNumber());
         System.out.println("Age: " + this.getAge());
-        System.out.println("Score: " + this.getGoalsScored());
+        System.out.println("Rank: " + this.getRank());
         System.out.println("Team: " + this.team);
     }
 

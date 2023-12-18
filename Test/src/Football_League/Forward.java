@@ -8,8 +8,8 @@ public class Forward extends Player implements Serializable {
         this.player_position = position.forward;
     }
 
-    public Forward(String name, int player_ID, int player_Number, int player_Age, int player_Score, int player_Rank, String team) {
-        super(name, player_ID, player_Number, player_Age, player_Score, player_Rank, team);
+    public Forward(String name, int player_ID, int player_Number, int player_Age, int player_Rank, String team) {
+        super(name, player_ID, player_Number, player_Age, player_Rank, team);
         this.player_position=position.forward;
     }
     public void displayPlayerInformation() {
@@ -20,6 +20,7 @@ public class Forward extends Player implements Serializable {
         System.out.println("Number: " + this.getNumber());
         System.out.println("Age: " + this.getAge());
         System.out.println("Score: " + this.getGoalsScored());
+        System.out.println("Rank: " + this.getRank());
         System.out.println("Team: " + this.team);
-    }//
+    }
 }

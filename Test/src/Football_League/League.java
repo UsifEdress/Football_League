@@ -58,16 +58,6 @@ public class League implements Serializable {
         return allPlayers;
     }
 
-
-
-    public void displayLeagueInfo() {
-        System.out.println("League Information:");
-        for (Team team : teams) {
-            team.displayTeamInformation();
-        }
-    }
-
-
     public void viewTeams() {
         System.out.println("Teams in the League:");
         int counter = 1;
@@ -96,48 +86,6 @@ public class League implements Serializable {
 
         }
     }
-
-
-    public void viewPlayers() {
-        System.out.println("Players in the League:");
-
-        char teamCounter = 'A';
-        int playerCounter = 1;
-
-        for (Team team : teams) {
-            System.out.println(teamCounter + ". " + team.getName());
-
-            for (Player player : team.getPlayers()) {
-
-                System.out.println("  " + playerCounter + ". " + player.getPlayerName());
-                playerCounter++;
-            }
-
-
-            System.out.println();
-
-
-            teamCounter++;
-        }
-
-    }
-
-
-    public void displayAllPlayers() {
-        System.out.println("All Players in the League:");
-
-        int playerCounter = 1;
-        for (Team team : teams) {
-            System.out.println("Team: " + team.getName());
-
-            for (Player player : team.getPlayers()) {
-                System.out.println("  - " + playerCounter + ". " + player.getPlayerName() + " (ID: " + player.getID() + ")");
-                playerCounter++;
-            }
-        }
-        System.out.println();
-    }
-
 
     public void searchPlayerByName(String playerName) {
         for (Team team : teams) {
