@@ -26,7 +26,8 @@ public class Menu implements Serializable {
         System.out.println("1. Teams");
         System.out.println("2. Players");
         System.out.println("3. Matches");
-        System.out.println("4. Exit");
+        System.out.println("4. Table");
+        System.out.println("5. Exit");
         System.out.print("Enter your choice: ");
     }
 
@@ -61,6 +62,8 @@ public class Menu implements Serializable {
                     handleMatchesMenu();
                     break;
                 case 4:
+                    handleTableMenu();
+                case 5:
                     league.saveTeamNames();
                     league.saveTeams();
                     System.out.println("Exiting the program. Goodbye!");
@@ -68,7 +71,7 @@ public class Menu implements Serializable {
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 4);
+        } while (choice != 5);
     }
 
     private void handlePlayersMenu() {
@@ -1476,7 +1479,7 @@ public class Menu implements Serializable {
 
                 switch (option) {
                     case 1:
-//                        simulateMatchesTillDate();
+                       simulateMatchesTillDate();
                         break;
                     case 2:
                         simulateAllMatches();
@@ -1505,8 +1508,44 @@ public class Menu implements Serializable {
             simulateMatchScore(match);
         }
     }
-    private void simulateMatchScore(Match match) {
+    public void simulateMatchesTillDate() {
+        System.out.println("Simulate Matches Till Date:");
 
+
+        LocalDate simulationDate = null;
+        while (true) {
+            try {
+                System.out.print("Enter the simulation date (YYYY-MM-DD) or 0 to go back: ");
+                String inputDate = scanner.nextLine();
+
+                if (inputDate.equals("0")) {
+                    return;
+                }
+
+                simulationDate = LocalDate.parse(inputDate, DateTimeFormatter.ISO_LOCAL_DATE);
+                break;
+            } catch (DateTimeParseException e) {
+                System.out.println("Error: Invalid date format. Please enter a valid date or 0 to go back.");
+            }
+        }
+
+
+        int simulatedMatchesCount = 0;
+        for (Match match : matchManager.getMatches()) {
+            if (match.getMatchDate().isEqual(simulationDate) || match.getMatchDate().isBefore(simulationDate) && !match.isSimulated()
+            ) {
+                simulateMatchScore(match);
+                match.setSimulated(true);
+                simulatedMatchesCount++;
+            }
+        }
+
+        System.out.println("Simulated " + simulatedMatchesCount + " matches till " + simulationDate + ".");
+    }
+
+    private void simulateMatchScore(Match match) {
+        match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed()+1);
+        match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed()+1);
         Random random = new Random();
         int homeTeamScore = random.nextInt(6);
         int awayTeamScore = random.nextInt(6);
@@ -1546,6 +1585,10 @@ public class Menu implements Serializable {
             awayTeam.setNumberOfPoints(awayTeam.getNumberOfPoints() + 1);
 
         }
+    }
+
+    private void handleTableMenu(){
+
     }
 
 

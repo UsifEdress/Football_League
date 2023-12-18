@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class League implements Serializable {
@@ -75,6 +76,28 @@ public class League implements Serializable {
 
 
     }
+    public void updateLeagueTable() {
+
+        Collections.sort(teams);
+
+
+        System.out.println("League Table:");
+        System.out.printf("%-15s%-20s%-10s%-10s%-10s%-10s%n",
+                "Matches", "Team", "Points", "Goals For", "Goals Against", "Goal Diff");
+
+        for (Team team : teams) {
+            System.out.printf("%-15d%-20s%-10d%-10d%-10d%-10d%n",
+                    team.getMatchesPlayed(),
+                    team.getTeamName(),
+                    team.getNumberOfPoints(),
+                    team.getTotalGoalsScored(),
+                    team.getTotalGoalsReceived(),
+                    team.getGoalDifference());
+        }
+    }
+
+
+
 
 
     public void viewPlayers() {

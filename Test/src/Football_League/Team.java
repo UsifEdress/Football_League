@@ -3,7 +3,7 @@ package Football_League;
 import java.io.Serializable;
 import java.util.*;
 
-public class Team implements Team_Interface, Serializable {
+public class Team implements Team_Interface, Serializable , Comparable<Team>{
     // Attributes
     private String teamName;
     private int teamId;
@@ -25,7 +25,11 @@ public class Team implements Team_Interface, Serializable {
     private int numberOfDraws = 0;
     private int goalsReceived = 0;
 
-    //
+
+
+    private int matchesPlayed = 0;
+
+
 
 //    private double averageAge = calculateAverageAge();
 
@@ -87,6 +91,13 @@ public class Team implements Team_Interface, Serializable {
     public int getGoalsReceived() {
         return goalsReceived;
     }
+    public int getMatchesPlayed() {
+        return matchesPlayed;
+    }
+
+    public int getGoalDifference() {
+        return getTotalGoalsScored() - getTotalGoalsReceived();
+    }
 
 //    public double getAverageAge() {
 //        return averageAge;
@@ -139,6 +150,10 @@ public class Team implements Team_Interface, Serializable {
 
     public void setTeamId(int teamId) {
         this.teamId = teamId;
+    }
+
+    public void setMatchesPlayed(int matchesPlayed) {
+        this.matchesPlayed = matchesPlayed;
     }
 
     // Constructor
@@ -459,6 +474,12 @@ public class Team implements Team_Interface, Serializable {
         return totalTeams;
 
 
+    }
+
+    @Override
+    public int compareTo(Team otherTeam) {
+
+        return Integer.compare(otherTeam.getNumberOfPoints(), this.getNumberOfPoints());
     }
 
 
