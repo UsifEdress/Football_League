@@ -26,8 +26,39 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
     private int matchesPlayed = 0;
 
 
+    public double calculateAverageAge() {
+        if (players == null || players.isEmpty()) {
+            return 0.0;
+        }
 
-//    private double averageAge = calculateAverageAge();
+        double sumAge = 0;
+
+        for (Player player : players) {
+            sumAge += player.getAge();
+        }
+
+        return sumAge / players.size();
+    }
+
+    public double getAverageAge() {
+        return calculateAverageAge();
+    }
+
+    public GoalKeeper getGK() {
+
+        List<Player> players = getPlayers();
+
+
+        for (Player player : players) {
+            if (player instanceof GoalKeeper) {
+                return (GoalKeeper) player;
+            }
+        }
+
+        return null;
+    }
+
+
 
     public static int totalTeams = 0;
     private transient Scanner scanner = new Scanner(System.in);

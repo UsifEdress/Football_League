@@ -7,6 +7,7 @@ import java.io.NotSerializableException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class League implements Serializable {
@@ -22,6 +23,44 @@ public class League implements Serializable {
     public void addTeam(Team team) {
         teams.add(team);
     }
+    public void sortTeamsByPoints() {
+        Collections.sort(teams);
+    }
+
+    public void sortTeamsByAverageAge() {
+        teams.sort(new Comparator<Team>() {
+            @Override
+            public int compare(Team team1, Team team2) {
+                return Double.compare(team1.calculateAverageAge(), team2.calculateAverageAge());
+            }
+        });
+    }
+
+    public void sortTeamsByGoals() {
+
+        teams.sort(Comparator.comparingInt(Team::getTotalGoalsScored).reversed());
+    }
+    void sortTeamsByLeastGoalsReceived() {
+
+        teams.sort(Comparator.comparingInt(Team::getTotalGoalsReceived));
+    }
+    void sortTeamsByMostGoalsScored() {
+        teams.sort(Comparator.comparingInt(Team::getTotalGoalsScored).reversed());
+    }
+
+    public List<Player> sortPlayersGoals() {
+        List<Player> allPlayers = new ArrayList<>();
+
+        for (Team team : teams) {
+            allPlayers.addAll(team.getPlayers());
+        }
+
+
+        allPlayers.sort((player1, player2) -> Integer.compare(player2.getGoalsScored(), player1.getGoalsScored()));
+
+        return allPlayers;
+    }
+
 
 
     public void displayLeagueInfo() {
@@ -32,19 +71,6 @@ public class League implements Serializable {
     }
 
 
-//    public void simulateMatches() {
-//        // Simulate matches between all pairs of teams
-//        for (int i = 0; i < teams.size(); i++) {
-//            for (int j = i + 1; j < teams.size(); j++) {
-//                Match match = new Match(teams.get(i), teams.get(j));
-//                match.Match_Simulation(teams.get(i), teams.get(j));
-//            }
-//        }
-//    }
-
-    // Display league standings based on points and goal difference
-
-    //
     public void viewTeams() {
         System.out.println("Teams in the League:");
         int counter = 1;
@@ -79,7 +105,7 @@ public class League implements Serializable {
         System.out.println("Players in the League:");
 
         char teamCounter = 'A';
-        int playerCounter = 1; // Cumulative player counter for all teams
+        int playerCounter = 1;
 
         for (Team team : teams) {
             System.out.println(teamCounter + ". " + team.getName());

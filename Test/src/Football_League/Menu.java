@@ -1608,6 +1608,8 @@ public class Menu implements Serializable {
         int homeTeamScore = random.nextInt(6);
         int awayTeamScore = random.nextInt(6);
         match.setSimulated(true);
+        distributeGoals(match.getHomeTeam(), homeTeamScore);
+        distributeGoals(match.getAwayTeam(), awayTeamScore);
 
         match.setHomeTeamScore(homeTeamScore);
         match.setAwayTeamScore(awayTeamScore);
@@ -1618,6 +1620,16 @@ public class Menu implements Serializable {
 
         System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
                 awayTeamScore + " " + match.getAwayTeam().getName());
+    }
+    private void distributeGoals(Team team, int goals) {
+        List<Player> players = team.getPlayers();
+        Random random = new Random();
+
+        for (int i = 0; i < goals; i++) {
+            int randomPlayerIndex = random.nextInt(players.size());
+            Player scorer = players.get(randomPlayerIndex);
+            scorer.setGoalScored(scorer.getGoalsScored() + 1);
+        }
     }
 
     private void updateTeamStats(Match match) {
@@ -1646,15 +1658,17 @@ public class Menu implements Serializable {
     }
 
     public void handleTableMenu() {
+        System.out.println();
         int choice = 0;
         do {
             try {
                 System.out.println("League Table Menu:");
                 System.out.println("1. Display League Standings");
                 System.out.println("2. Display Average Age Standings");
-                System.out.println("3. Display Top Goal Scorers");
-                System.out.println("4. Display Top Clean Sheets");
-                System.out.println("5. Exit");
+                System.out.println("3. Display Top Teams Goals");
+                System.out.println("4. Display Top Goal Scorers");
+                System.out.println("5. Display Top Clean Sheets");
+                System.out.println("6. Exit");
 
                 System.out.print("Enter your choice: ");
                 choice = scanner.nextInt();
@@ -1666,15 +1680,18 @@ public class Menu implements Serializable {
                        league.displayLeagueStandings();
                         break;
                     case 2:
-//                        displayAverageAgeStandings();
+                        displayAverageAgeStandings();
                         break;
                     case 3:
-//                        displayTopGoalScorers();
-                        break;
+                    displayTeamsGoals();
+                    break;
                     case 4:
-//                        displayTopCleanSheets();
+                       displayTopGoalScorers();
                         break;
                     case 5:
+                       displayTopCleanSheets();
+                        break;
+                    case 6:
                         break;
                     default:
                         System.out.println("Invalid choice. Please enter a number between 1 and 5.");
@@ -1685,11 +1702,79 @@ public class Menu implements Serializable {
             }
         } while (choice != 5);
     }
+    private void displayAverageAgeStandings() {
+
+        league.sortTeamsByAverageAge();
+
+
+        System.out.println("Average Age Standings:");
+        System.out.printf("%-20s%-15s%n", "Team", "Avg Age");
+
+
+        for (Team team : league.teams) {
+            System.out.printf("%-20s%-15.2f%n", team.getTeamName(), team.calculateAverageAge());
+        }
+    }
+
+
+    public void displayTopCleanSheets() {
+
+        league.sortTeamsByLeastGoalsReceived();
+        int count = 0;
+
+        for (Team team : league.teams) {
+            GoalKeeper goalkeeper = team.getGK();
+
+            if (goalkeeper != null) {
+
+                System.out.printf("%-20s%-10s%-10d%n", team.getTeamName(), goalkeeper.toString(), team.getTotalGoalsReceived());
+                count++;
+            }
+
+            if (count >= 5) {
+
+                break;
+            }
+        }
+    }
+    public void displayTeamsGoals() {
+        league.sortTeamsByMostGoalsScored();
+
+        System.out.println("Teams and Goals For:");
+        System.out.printf("%-20s%-10s%n", "Team", "GF");
+
+        for (Team team : league.teams) {
+            System.out.printf("%-20s%-10d%n", team.getTeamName(), team.getTotalGoalsScored());
+        }
+    }
+    public void displayTopGoalScorers() {
+        List<Player> topGoalScorers = league.sortPlayersGoals();
+
+        System.out.println("Top 5 Goal Scorers:");
+        System.out.printf("%-20s%-10s%-10s%n", "Player", "Team", "Goals Scored");
+
+        int count = 0;
+        for (Player player : topGoalScorers) {
+            System.out.printf("%-20s%-10s%-10d%n",
+                    player.getPlayerName(),
+                    player.getTeamName(),
+                    player.getGoalsScored());
+
+            count++;
+            if (count >= 5) {
+                break;
+            }
+        }
+    }
+
+
+
 
 
     private boolean validateName(String name) {
         return !name.trim().isEmpty() && name.matches("[a-zA-Z\\s-]+");
     }
+
 
 
 }

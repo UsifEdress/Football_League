@@ -6,7 +6,7 @@ public class GoalKeeper extends Player implements Serializable {
     public GoalKeeper() {
         super();
         this.player_position = position.Goalkeeper;
-    }//
+    }
 
     public void displayPlayerInformation() {
         System.out.println("Player Information:");
@@ -17,5 +17,9 @@ public class GoalKeeper extends Player implements Serializable {
         System.out.println("Age: " + this.getAge());
         System.out.println("Score: " + this.getGoalsScored());
         System.out.println("Team: " + this.team);
+    }
+
+    public String toString() {
+        return  getPlayerName();
     }
 }

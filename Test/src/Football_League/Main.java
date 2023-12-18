@@ -9,7 +9,7 @@ public class Main {
         League league;
         Menu menu ;
         if (Files.is_MatchManager_found()) {
-            menu = new Menu(Files.ReadMatchManager());
+            menu = new Menu(Files. ReadMatchManager());
 
         } else {
             league = new League();

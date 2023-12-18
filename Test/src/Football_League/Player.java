@@ -12,6 +12,12 @@ public abstract class Player implements Player_Interface, Serializable {
     private int Player_Score;
     private float Player_Rank;
 
+
+
+
+
+    private int goalScored = 0;
+
     public enum position {Goalkeeper, defender, midfielder, forward}
 
     public position player_position;
@@ -332,6 +338,9 @@ public abstract class Player implements Player_Interface, Serializable {
     public float getRank() {
         return this.Player_Rank;
     }
+    public int getGoalScored() {
+        return goalScored;
+    }
 
     //setters
     @Override
@@ -359,12 +368,11 @@ public abstract class Player implements Player_Interface, Serializable {
         this.team = team;
     }
 
-    // (int) (Math.random() * (Max-Min) + Min)
-    /*
-    this function returns double value
-    https://ioflood.com/blog/math-random-java/
-    https://stackoverflow.com/questions/6091355/setting-the-lower-limit-for-random-number-function
-     */
+    public void setGoalScored(int goalScored) {
+        this.goalScored = goalScored;
+    }
+
+
     @Override
     public int successful_passes(int lower_limit, int upper_limit) {
         return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
