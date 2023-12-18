@@ -21,5 +21,5 @@ public class Forward extends Player implements Serializable {
         System.out.println("Age: " + this.getAge());
         System.out.println("Score: " + this.getGoalsScored());
         System.out.println("Team: " + this.team);
-    }
+    }//
 }
