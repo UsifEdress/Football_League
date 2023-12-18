@@ -1476,7 +1476,7 @@ public class Menu implements Serializable {
 
                 switch (option) {
                     case 1:
-                        simulateMatchesTillDate();
+//                        simulateMatchesTillDate();
                         break;
                     case 2:
                         simulateAllMatches();
@@ -1522,43 +1522,6 @@ public class Menu implements Serializable {
         System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
                 awayTeamScore + " " + match.getAwayTeam().getName());
     }
-
-    public void simulateMatchesTillDate() {
-        System.out.println();
-
-
-        LocalDate simulationDate = null;
-        while (true) {
-            try {
-                displayMatches();
-                System.out.print("Enter the simulation date (YYYY-MM-DD) or 0 to go back: ");
-                String inputDate = scanner.nextLine();
-
-                if (inputDate.equals("0")) {
-                    return;
-                }
-
-                simulationDate = LocalDate.parse(inputDate, DateTimeFormatter.ISO_LOCAL_DATE);
-                break;
-            } catch (DateTimeParseException e) {
-                System.out.println("Error: Invalid date format. Please enter a valid date or 0 to go back.");
-            }
-        }
-
-
-        int simulatedMatchesCount = 0;
-        for (Match match : matchManager.getMatches()) {
-            if (match.getMatchDate().isEqual(simulationDate) || match.getMatchDate().isBefore(simulationDate) && !match.isSimulated()
-            ) {
-                simulateMatchScore(match);
-                match.setSimulated(true);
-                simulatedMatchesCount++;
-            }
-        }
-
-        System.out.println("Simulated " + simulatedMatchesCount + " matches till " + simulationDate + ".");
-    }
-
 
     private void updateTeamStats(Match match) {
         int homeTeamScore = match.getHomeTeamScore();

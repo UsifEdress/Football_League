@@ -3,7 +3,7 @@ package Football_League;
 import java.io.Serializable;
 import java.util.*;
 
-public class Team implements Comparable<Team_Interface>, Serializable {
+public class Team implements Team_Interface, Serializable {
     // Attributes
     private String teamName;
     private int teamId;
@@ -355,10 +355,7 @@ public class Team implements Comparable<Team_Interface>, Serializable {
             System.out.println();
         }
     }
-    public int compareTo(Team otherTeam) {
-        // Compare teams based on points
-        return Integer.compare(otherTeam.getNumberOfPoints(), this.getNumberOfPoints());
-    }
+
 
     public void displayTeamPlayersWithID() {
         System.out.println("Players:");
