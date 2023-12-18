@@ -1601,7 +1601,7 @@ public class Menu implements Serializable {
     }
 
     private void simulateMatchScore(Match match) {
-        if(match.getHomeTeam().players.size()<1 || match.getAwayTeam().players.size()<1 )
+        if(match.getHomeTeam().players.size()<11 || match.getAwayTeam().players.size()<11 )
         {
             System.out.println("Each Team should have at least 11 Players to simulate!");
         }
