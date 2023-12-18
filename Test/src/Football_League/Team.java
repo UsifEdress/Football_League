@@ -525,7 +525,23 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
 //        sumAge /= numberOfPlayers;
 //        return sumAge;
 //    }
-
+    public void resetStats(){
+        this.setTotalGoalsScored(0);
+        this.setMatchesPlayed(0);
+        this.setNumberOfPoints(0);
+        this.setNumberOfWins(0);
+        this.setNumberOfLoses(0);
+        this.setNumberOfDraws(0);
+        this.setTotalGoalsReceived(0);
+    }
+    public void setNumberOfWins(int num) {
+        this.numberOfWins = num;
+    }
+    public void setNumberOfLoses(int num) {
+        this.numberOfLoses= num;
+    }
+    public void setNumberOfDraws(int num) {
+        this.numberOfDraws=num;}
 
 }
 

@@ -114,7 +114,11 @@ public class MatchManager implements Serializable {
         }
     }
 
-
+    public void resetMatches() {
+        for (Match match : this.matches) {
+            match.setSimulated(false);
+        }
+    }
 
 
 

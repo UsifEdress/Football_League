@@ -24,6 +24,4 @@ interface Player_Interface {
      int getGoalsScored();
      float getRank();
 
-     int successful_passes(int x, int y);
-     int unsuccessful_passes(int x, int y);
 }

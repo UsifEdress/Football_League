@@ -12,23 +12,12 @@ public abstract class Player implements Player_Interface, Serializable {
     private int Player_Score;
     private float Player_Rank;
 
-
-
-
-
     private int goalScored = 0;
 
     public enum position {Goalkeeper, defender, midfielder, forward}
 
     public position player_position;
     public String team;
-
-
-    public int Number_Goals;
-
-
-    public int Total_Number_Goals;
-
 
     /////////////////////////////////////////////////////////////////
 
@@ -277,18 +266,15 @@ public abstract class Player implements Player_Interface, Serializable {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validateString(String input) {
-        if (input == null || input.trim().isEmpty() || !input.matches("[a-zA-Z ]+")) {
-            throw new IllegalArgumentException("String must be a non-empty string without numbers or symbols.");
+        if (input == null || input.trim().isEmpty() || !input.matches("[a-zA-Z -]+")) {
+            throw new IllegalArgumentException("String must be a non-empty string without numbers or symbols (excluding hyphen).");
         }
     }
 
-
-
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private void validatescore(int score) {
-        if (score < 0 || score > 90) {
-            throw new IllegalArgumentException("Player Score must be between 0 and 60.");
+        if (score < 0 || score > 99) {
+            throw new IllegalArgumentException("Player Score must be between 0 and 99.");
         }
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -338,9 +324,6 @@ public abstract class Player implements Player_Interface, Serializable {
     public float getRank() {
         return this.Player_Rank;
     }
-    public int getGoalScored() {
-        return goalScored;
-    }
 
     //setters
     @Override
@@ -372,21 +355,10 @@ public abstract class Player implements Player_Interface, Serializable {
         this.goalScored = goalScored;
     }
 
+    public void resetStats() {
+        this.setGoalScored(0);
 
-    @Override
-    public int successful_passes(int lower_limit, int upper_limit) {
-        return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
     }
-
-    @Override
-    public int unsuccessful_passes(int lower_limit, int successful_passes) {
-        return (int) ((Math.random() * (successful_passes - lower_limit)) + lower_limit);
-    }
-
-    int Number_of_shots(int lower_limit, int upper_limit) {
-        return (int) ((Math.random() * (upper_limit - lower_limit)) + lower_limit);
-    }
-
 
 }
 

@@ -5,15 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class League implements Serializable {
     public List<Team> teams;
 
-
+    private transient Scanner scanner = new Scanner(System.in);
     private MatchManager matchManager;
 
     public League() {
@@ -169,5 +166,46 @@ public class League implements Serializable {
             }
         }
         System.out.println("Team not found.");
+    }
+    public boolean resetLeague() {
+        while (true) {
+            System.out.println("Are you sure you want to reset the league? (y/n)");
+
+            try {
+                String userInput = scanner.nextLine();
+
+                if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
+                    resetTeams();
+                    resetPlayers();
+                    System.out.println("League reset successfully.");
+                    return true;
+                } else if (Objects.equals(userInput, "n") || Objects.equals(userInput, "N")) {
+                    System.out.println("League reset canceled.");
+                    return false;
+                } else {
+                    System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter 'y' or 'n'.");
+                scanner.next();
+            }
+        }
+    }
+
+
+    public void resetTeams() {
+        for (Team team : teams) {
+            team.resetStats();
+        }
+    }
+
+
+    public void resetPlayers() {
+        for (Team team : teams) {
+            List<Player> players = team.getPlayers();
+            for (Player player : players) {
+                player.resetStats();
+            }
+        }
     }
 }

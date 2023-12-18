@@ -1602,7 +1602,7 @@ public class Menu implements Serializable {
     }
 
     private void simulateMatchScore(Match match) {
-        if(match.getHomeTeam().players.size()<11 || match.getAwayTeam().players.size()<11 )
+        if(match.getHomeTeam().players.size()<1 || match.getAwayTeam().players.size()<1 )
         {
             System.out.println("Each Team should have at least 11 Players to simulate!");
         }
@@ -1674,7 +1674,8 @@ public class Menu implements Serializable {
                 System.out.println("3. Display Top Teams Goals");
                 System.out.println("4. Display Top Goal Scorers");
                 System.out.println("5. Display Top Clean Sheets");
-                System.out.println("6. Exit");
+                System.out.println("6. Reset League");
+                System.out.println("7. Back");
 
                 System.out.print("Enter your choice: ");
                 choice = scanner.nextInt();
@@ -1683,21 +1684,26 @@ public class Menu implements Serializable {
 
                 switch (choice) {
                     case 1:
-                       league.displayLeagueStandings();
+                        league.displayLeagueStandings();
                         break;
                     case 2:
                         displayAverageAgeStandings();
                         break;
                     case 3:
-                    displayTeamsGoals();
-                    break;
+                        displayTeamsGoals();
+                        break;
                     case 4:
-                       displayTopGoalScorers();
+                        displayTopGoalScorers();
                         break;
                     case 5:
-                       displayTopCleanSheets();
+                        displayTopCleanSheets();
                         break;
                     case 6:
+                        if ( league.resetLeague()) {
+                            matchManager.resetMatches();
+                        }
+                        break;
+                    case 7:
                         break;
                     default:
                         System.out.println("Invalid choice. Please enter a number between 1 and 5.");
@@ -1706,7 +1712,7 @@ public class Menu implements Serializable {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.next();
             }
-        } while (choice != 5);
+        } while (choice != 7);
     }
     private void displayAverageAgeStandings() {
 
