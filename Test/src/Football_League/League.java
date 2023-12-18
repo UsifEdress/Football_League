@@ -120,24 +120,7 @@ public class League implements Serializable {
             System.out.println("Are you sure you want to reset the league? (y/n)");
 
             try {
-                if(scanner!=null)
-                {
-                    String userInput = scanner.nextLine();
-                    if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
-                        resetTeams();
-                        resetPlayers();
-                        System.out.println("League reset successfully.");
-                        return true;
-                    } else if (Objects.equals(userInput, "n") || Objects.equals(userInput, "N")) {
-                        System.out.println("League reset canceled.");
-                        return false;
-                    } else {
-                        System.out.println("Invalid input. Please enter 'y' or 'n'.");
-                    }
-                }
-                else
-                {
-                    Scanner test = new Scanner(System.in);
+                    Scanner test=new Scanner(System.in);
                     String userInput = test.nextLine();
                     if (Objects.equals(userInput, "y") || Objects.equals(userInput, "Y")) {
                         resetTeams();
@@ -150,7 +133,6 @@ public class League implements Serializable {
                     } else {
                         System.out.println("Invalid input. Please enter 'y' or 'n'.");
                     }
-                }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter 'y' or 'n'.");
                 scanner.next();
