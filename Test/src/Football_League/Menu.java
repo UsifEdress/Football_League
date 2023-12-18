@@ -3,6 +3,8 @@ package Football_League;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -16,8 +18,17 @@ public class Menu implements Serializable {
 
     public Menu(League league) {
         this.league = league;
-        this.matchManager = new MatchManager(league.teams);
+        this.matchManager = new MatchManager(league);
         this.scanner = new Scanner(System.in);
+    }
+    public Menu(MatchManager matchManager1) {
+        this.league = matchManager1.getLeague();
+        this.matchManager = matchManager1;
+        this.scanner = new Scanner(System.in);
+    }
+
+    public MatchManager getMatchManager() {
+        return matchManager;
     }
 
     private void displayMenu() {
@@ -31,7 +42,7 @@ public class Menu implements Serializable {
         System.out.print("Enter your choice: ");
     }
 
-    public void start() throws IOException, ClassNotFoundException , FileNotFoundException {
+    public void start() throws IOException, ClassNotFoundException, FileNotFoundException {
 //        league.readTeams(league.readTeamsNames());
         System.out.println("Welcome to football league simulator !");
         int choice;
@@ -63,9 +74,9 @@ public class Menu implements Serializable {
                     break;
                 case 4:
                     handleTableMenu();
+                    break;
                 case 5:
-                    league.saveTeamNames();
-                    league.saveTeams();
+
                     System.out.println("Exiting the program. Goodbye!");
                     break;
                 default:
@@ -527,7 +538,7 @@ public class Menu implements Serializable {
                 case 3:
 
                     league.viewTeams();
-                    System.out.println("Total teams : " + (Team.calculateTotalTeams()+league.Teams_list.size()));
+                    System.out.println("Total teams : " + (matchManager.getLeague().teams.size()));
                     break;
                 case 4:
                     if (league.teams.isEmpty()) {
@@ -846,15 +857,14 @@ public class Menu implements Serializable {
                         teamFound = true;
 
                         String homeAwayIndication = match.getHomeTeam().equals(selectedTeam) ? "Home" : "Away";
-                        System.out.println(homeAwayIndication+" Match");
+                        System.out.println(homeAwayIndication + " Match");
 
                         System.out.println(match);
                         System.out.println("Match Date :" + match.getMatchDate());
-                        if (match.isSimulated()){
+                        if (match.isSimulated()) {
                             System.out.println("Match Score : " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore());
-                        }
-                        else{
-                            System.out.println("Match Score : Not Played Yet" );
+                        } else {
+                            System.out.println("Match Score : Not Played Yet");
                         }
                         System.out.println("------------------------");
                     }
@@ -1034,9 +1044,10 @@ public class Menu implements Serializable {
             System.out.println("1. Create Match");
             System.out.println("2. Edit Match");
             System.out.println("3. Display all Matches");
-            System.out.println("4. Delete a Match");
+            System.out.println("4. Search for a Match");
             System.out.println("5. Simulate Matches");
-            System.out.println("6. Back");
+            System.out.println("6. Delete a Match");
+            System.out.println("7. Back");
             System.out.print("Enter your choice: ");
 
             try {
@@ -1058,7 +1069,7 @@ public class Menu implements Serializable {
                     createMatch();
                     break;
                 case 2:
-                    if (matchManager.matches.isEmpty()){
+                    if (matchManager.matches.isEmpty()) {
                         System.out.println("There is no Matches to edit !");
                         System.out.println();
                         break;
@@ -1066,7 +1077,7 @@ public class Menu implements Serializable {
                     editMatch();
                     break;
                 case 3:
-                    if (matchManager.matches.isEmpty()){
+                    if (matchManager.matches.isEmpty()) {
                         System.out.println("There is no Matches to view !");
                         System.out.println();
                         break;
@@ -1074,15 +1085,10 @@ public class Menu implements Serializable {
                     displayMatches();
                     break;
                 case 4:
-                    if (matchManager.matches.isEmpty()){
-                        System.out.println("There is no Matches to delete !");
-                        System.out.println();
-                        break;
-                    }
-                    deleteMatch();
+                    displayMatchesOnDate();
                     break;
                 case 5:
-                    if (matchManager.matches.isEmpty()){
+                    if (matchManager.matches.isEmpty()) {
                         System.out.println("There is no Matches to simulate !");
                         System.out.println();
                         break;
@@ -1090,12 +1096,20 @@ public class Menu implements Serializable {
                     simulateMatch();
                     break;
                 case 6:
+                    if (matchManager.matches.isEmpty()) {
+                        System.out.println("There is no Matches to delete !");
+                        System.out.println();
+                        break;
+                    }
+                    deleteMatch();
+                    break;
+                case 7:
                     System.out.println("Returning to main menu.");
                     break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (choice != 6);
+        } while (choice != 7);
     }
 
     private void createMatch() {
@@ -1107,7 +1121,7 @@ public class Menu implements Serializable {
                 league.viewTeams();
                 int x = scanner.nextInt();
                 scanner.nextLine();
-                if (x== 0)
+                if (x == 0)
                     break;
 
                 if (x < 1 || x > league.teams.size()) {
@@ -1180,6 +1194,7 @@ public class Menu implements Serializable {
             }
         } while (inputMismatch);
     }
+
     public void editMatch() {
         Scanner scanner = new Scanner(System.in);
 
@@ -1208,6 +1223,7 @@ public class Menu implements Serializable {
         Match match = matchManager.matches.get(matchIndex - 1);
         updateMatch(match);
     }
+
     public void updateMatch(Match match) {
         Scanner scanner = new Scanner(System.in);
         String choice;
@@ -1312,15 +1328,14 @@ public class Menu implements Serializable {
                 if ("y".equals(choice)) {
                     while (true) {
                         try {
-                            if (match.getHomeTeamScore() > match.getAwayTeamScore()){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()-3);
+                            if (match.getHomeTeamScore() > match.getAwayTeamScore()) {
+                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() - 3);
                             }
-                            if (match.getHomeTeamScore() == match.getAwayTeamScore()){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()-1);
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()-1);
-                            }
-                            else{
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()-3);
+                            if (match.getHomeTeamScore() == match.getAwayTeamScore()) {
+                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() - 1);
+                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints() - 1);
+                            } else {
+                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints() - 3);
                             }
 
                             match.getHomeTeam().setTotalGoalsScored(match.getHomeTeam().getTotalGoalsScored() - match.getHomeTeamScore());
@@ -1333,15 +1348,14 @@ public class Menu implements Serializable {
                             int newAwayScore = scanner.nextInt();
                             scanner.nextLine();
 
-                            if (newHomeScore >newAwayScore){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+3);
+                            if (newHomeScore > newAwayScore) {
+                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() + 3);
                             }
-                            if (newHomeScore == newAwayScore){
-                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+1);
-                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints()+1);
-                            }
-                            else{
-                                match.getAwayTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints()+3);
+                            if (newHomeScore == newAwayScore) {
+                                match.getHomeTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() + 1);
+                                match.getAwayTeam().setNumberOfPoints(match.getAwayTeam().getNumberOfPoints() + 1);
+                            } else {
+                                match.getAwayTeam().setNumberOfPoints(match.getHomeTeam().getNumberOfPoints() + 3);
                             }
                             match.getHomeTeam().setTotalGoalsScored(match.getHomeTeam().getTotalGoalsScored() + newHomeScore);
                             match.getAwayTeam().setTotalGoalsScored(match.getAwayTeam().getTotalGoalsScored() - newAwayScore);
@@ -1350,7 +1364,6 @@ public class Menu implements Serializable {
 
                             match.setHomeTeamScore(newHomeScore);
                             match.setAwayTeamScore(newAwayScore);
-
 
 
                             System.out.println("Match score updated successfully.");
@@ -1372,9 +1385,52 @@ public class Menu implements Serializable {
         System.out.println("Match information updated successfully!");
     }
 
-    private void displayMatches(){
+    private void displayMatches() {
         matchManager.displayAllMatches();
     }
+
+    private void displayMatchesOnDate() {
+        boolean validInput = false;
+
+        while (!validInput) {
+            try {
+                System.out.print("Enter the date (yyyy-MM-dd) to display matches: ");
+                String inputDateStr = scanner.next();
+                LocalDate inputDate = LocalDate.parse(inputDateStr);
+
+                System.out.println("Matches on " + inputDate + ":");
+
+                boolean foundMatches = false;
+
+
+                for (Match match : matchManager.getMatches()) {
+                    if (match.getMatchDate().isEqual(inputDate) ) {
+                        foundMatches = true;
+
+                        System.out.println(match);
+                        System.out.println("Match Date :" + match.getMatchDate());
+                        if (match.isSimulated()) {
+                            System.out.println("Match Score : " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore());
+                        } else {
+                            System.out.println("Match Score : Not Played Yet");
+                        }
+                        System.out.println("------------------------");
+                    }
+                }
+
+                if (!foundMatches) {
+                    System.out.println("No matches on " + inputDate + ".");
+                }
+
+                validInput = true;
+
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Please use yyyy-MM-dd. Try again.");
+                scanner.nextLine(); // Consume the invalid input
+            }
+        }
+    }
+
 
     private boolean checkStadiumAvailability(String stadiumName, LocalDate matchDate) {
 
@@ -1394,6 +1450,7 @@ public class Menu implements Serializable {
 
         return true;
     }
+
     private boolean stadiumExists(String stadiumName, List<Team> teams) {
         for (Team team : teams) {
             if (team.getStadium().equalsIgnoreCase(stadiumName)) {
@@ -1402,6 +1459,7 @@ public class Menu implements Serializable {
         }
         return false;
     }
+
     public void deleteMatch() {
         int matchIndex;
         while (true) {
@@ -1414,7 +1472,7 @@ public class Menu implements Serializable {
 
                 if (matchIndex == 0) {
                     System.out.println("Deletion canceled.");
-                    return;
+                    break;
                 } else if (matchIndex > 0 && matchIndex <= matchManager.matches.size()) {
                     break;
                 } else {
@@ -1436,15 +1494,13 @@ public class Menu implements Serializable {
 
             if ("y".equals(confirmation)) {
 
-                if (matchToDelete.getHomeTeamScore() > matchToDelete.getAwayTeamScore()){
-                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints()-3);
-                }
-                else if (matchToDelete.getHomeTeamScore() == matchToDelete.getAwayTeamScore()){
-                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints()-1);
-                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints()-1);
-                }
-                else{
-                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints()-3);
+                if (matchToDelete.getHomeTeamScore() > matchToDelete.getAwayTeamScore()) {
+                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints() - 3);
+                } else if (matchToDelete.getHomeTeamScore() == matchToDelete.getAwayTeamScore()) {
+                    matchToDelete.getHomeTeam().setNumberOfPoints(matchToDelete.getHomeTeam().getNumberOfPoints() - 1);
+                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints() - 1);
+                } else {
+                    matchToDelete.getAwayTeam().setNumberOfPoints(matchToDelete.getAwayTeam().getNumberOfPoints() - 3);
                 }
 
 
@@ -1463,6 +1519,7 @@ public class Menu implements Serializable {
             }
         }
     }
+
     private void simulateMatch() {
         boolean inputMismatch;
         do {
@@ -1479,7 +1536,7 @@ public class Menu implements Serializable {
 
                 switch (option) {
                     case 1:
-                       simulateMatchesTillDate();
+                        simulateMatchesTillDate();
                         break;
                     case 2:
                         simulateAllMatches();
@@ -1500,7 +1557,6 @@ public class Menu implements Serializable {
     }
 
 
-
     public void simulateAllMatches() {
         System.out.println("Simulating all matches..");
 
@@ -1508,6 +1564,7 @@ public class Menu implements Serializable {
             simulateMatchScore(match);
         }
     }
+
     public void simulateMatchesTillDate() {
         System.out.println("Simulate Matches Till Date:");
 
@@ -1515,6 +1572,7 @@ public class Menu implements Serializable {
         LocalDate simulationDate = null;
         while (true) {
             try {
+                displayMatches();
                 System.out.print("Enter the simulation date (YYYY-MM-DD) or 0 to go back: ");
                 String inputDate = scanner.nextLine();
 
@@ -1544,8 +1602,8 @@ public class Menu implements Serializable {
     }
 
     private void simulateMatchScore(Match match) {
-        match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed()+1);
-        match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed()+1);
+        match.getHomeTeam().setMatchesPlayed(match.getHomeTeam().getMatchesPlayed() + 1);
+        match.getAwayTeam().setMatchesPlayed(match.getAwayTeam().getMatchesPlayed() + 1);
         Random random = new Random();
         int homeTeamScore = random.nextInt(6);
         int awayTeamScore = random.nextInt(6);
@@ -1555,7 +1613,7 @@ public class Menu implements Serializable {
         match.setAwayTeamScore(awayTeamScore);
 
 
-       updateTeamStats(match);
+        updateTeamStats(match);
 
 
         System.out.println(match.getHomeTeam().getName() + " " + homeTeamScore + " - " +
@@ -1587,21 +1645,51 @@ public class Menu implements Serializable {
         }
     }
 
-    private void handleTableMenu(){
+    public void handleTableMenu() {
+        int choice = 0;
+        do {
+            try {
+                System.out.println("League Table Menu:");
+                System.out.println("1. Display League Standings");
+                System.out.println("2. Display Average Age Standings");
+                System.out.println("3. Display Top Goal Scorers");
+                System.out.println("4. Display Top Clean Sheets");
+                System.out.println("5. Exit");
 
+                System.out.print("Enter your choice: ");
+                choice = scanner.nextInt();
+
+
+
+                switch (choice) {
+                    case 1:
+                       league.displayLeagueStandings();
+                        break;
+                    case 2:
+//                        displayAverageAgeStandings();
+                        break;
+                    case 3:
+//                        displayTopGoalScorers();
+                        break;
+                    case 4:
+//                        displayTopCleanSheets();
+                        break;
+                    case 5:
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please enter a number between 1 and 5.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
+            }
+        } while (choice != 5);
     }
-
-
-
 
 
     private boolean validateName(String name) {
         return !name.trim().isEmpty() && name.matches("[a-zA-Z\\s-]+");
     }
-
-
-
-
 
 
 }

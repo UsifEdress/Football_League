@@ -7,11 +7,13 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class MatchManager implements Serializable {
-    private List<Team> teams;
+    private League league;
     List<Match> matches;
     private List<String> referees;
 
-
+    public League getLeague() {
+        return league;
+    }
 
     private static int matchIdCounter = 1;
     public static int getMatchIdCounter() {
@@ -22,8 +24,8 @@ public class MatchManager implements Serializable {
     }
 
 
-    public MatchManager(List<Team> teams) {
-        this.teams = teams;
+    public MatchManager(League league) {
+        this.league = league;
         this.matches = new ArrayList<>();
         this.referees = initializeReferees();
         scheduleMatches();
@@ -47,7 +49,7 @@ public class MatchManager implements Serializable {
     }
 
     public void updateTeams(List<Team> updatedTeams) {
-        this.teams = updatedTeams;
+        this.league.teams = updatedTeams;
         scheduleMatches();
     }
 
@@ -57,10 +59,10 @@ public class MatchManager implements Serializable {
         int matchId = 1;
 
         LocalDate currentDate = LocalDate.now();
-        for (int i = 0; i < teams.size(); i++) {
-            for (int j = i + 1; j < teams.size(); j++) {
-                Team team1 = teams.get(i);
-                Team team2 = teams.get(j);
+        for (int i = 0; i < league.teams.size(); i++) {
+            for (int j = i + 1; j < league.teams.size(); j++) {
+                Team team1 = league.teams.get(i);
+                Team team2 = league.teams.get(j);
                 String selectedReferee = referees.get(random.nextInt(referees.size()));
 
                 Match homeMatch = new Match(team1, team2, team1.getStadium(), selectedReferee, matchId++, currentDate);
@@ -101,7 +103,7 @@ public class MatchManager implements Serializable {
             System.out.println("Stadium: " + match.getStadium());
             System.out.println("Referee: " + match.getReferee());
 
-            // Check if the match is simulated
+
             if (match.isSimulated()) {
                 System.out.println("Score: " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore());
             } else {
@@ -124,5 +126,3 @@ public class MatchManager implements Serializable {
 
 
 }
-
-

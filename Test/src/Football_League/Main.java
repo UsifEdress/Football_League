@@ -7,13 +7,15 @@ import java.io.NotSerializableException;
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException, NotSerializableException, FileNotFoundException {
         League league;
-        if (Files.is_found()) {
-            league = Files.ReadLeague();
+        Menu menu ;
+        if (Files.is_MatchManager_found()) {
+            menu = new Menu(Files.ReadMatchManager());
+
         } else {
             league = new League();
+            menu = new Menu(league);
         }
-        Menu menu = new Menu(league);
         menu.start();
-        Files.WriteLeague(league);
+        Files.WriteMatchManager(menu.getMatchManager());
     }
 }

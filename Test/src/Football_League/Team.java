@@ -11,10 +11,6 @@ public class Team implements Team_Interface, Serializable , Comparable<Team>{
     private Player captain;
     private List<Match> matches;
 
-
-
-
-
     private String stadium;
     private int goalsScored = 0;
     private int totalGoalsScored = 0;

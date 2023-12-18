@@ -1,10 +1,11 @@
 package Football_League;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
 // do not forget to make an interface for this class
-public class Match {
+public class Match implements Serializable {
     private static int nextId = 1;
 
 
@@ -110,39 +111,6 @@ public class Match {
     }
 
 
-
-
-//    void Match_Simulation(Team t1, Team t2) {
-//        t1.setGoalsScored(t1.Goals_assumption());
-//        t2.setGoalsScored(t2.Goals_assumption());
-//
-//
-//        t1.setGoalsReceived(t2.getGoalsScored());
-//        t2.setGoalsReceived(t1.getGoalsScored());
-//
-//
-//        t1.setTotalGoalsScored(t1.getGoalsScored());
-//        t2.setTotalGoalsScored(t2.getGoalsScored());
-//
-//
-//        t1.setTotalGoalsReceived(t1.getGoalsReceived());
-//        t2.setTotalGoalsReceived(t2.getGoalsReceived());
-//        if (t1.getGoalsScored() > t2.getGoalsScored()) {
-//            t1.setNumberOfWins();
-//            t1.setNumberOfPoints(3);
-//            t2.setNumberOfLoses();
-//        } else if (t1.getGoalsScored() < t2.getGoalsScored()) {
-//            t1.setNumberOfLoses();
-//            t2.setNumberOfWins();
-//            t2.setNumberOfPoints(3);
-//        } else {
-//            t1.setNumberOfDraws();
-//            t1.setNumberOfPoints(1);
-//            t2.setNumberOfDraws();
-//            t2.setNumberOfPoints(1);
-//        }
-//
-//    }
 
 
 }
