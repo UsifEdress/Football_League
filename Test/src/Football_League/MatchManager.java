@@ -101,7 +101,7 @@ public class MatchManager implements Serializable {
             System.out.println("Stadium: " + match.getStadium());
             System.out.println("Referee: " + match.getReferee());
 
-            // Check if the match is simulated
+
             if (match.isSimulated()) {
                 System.out.println("Score: " + match.getHomeTeamScore() + " - " + match.getAwayTeamScore());
             } else {

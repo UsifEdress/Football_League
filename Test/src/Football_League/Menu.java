@@ -9,7 +9,9 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class Menu implements Serializable {
+    //
     private League league;
+
     private Scanner scanner;
 
     private MatchManager matchManager;

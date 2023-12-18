@@ -25,6 +25,8 @@ public class Team implements Team_Interface, Serializable {
     private int numberOfDraws = 0;
     private int goalsReceived = 0;
 
+    //
+
 //    private double averageAge = calculateAverageAge();
 
     public static int totalTeams = 0;
